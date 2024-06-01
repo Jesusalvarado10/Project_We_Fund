@@ -28,7 +28,7 @@ function Home() {
     
     return (
             
-            <div className="w-screen top-2 h-20 border border-x-cyan-100 rounded-[300px]">
+            <div className="max-w-screen-xl mx-auto top-2 h-20 border border-x-cyan-100 rounded-[300px]" style={{marginTop:'20px', backgroundColor:'white'}}>
                 <div className="h-[100%] flex items-center pl-4">
                     <div className="flex items-center justify-evenly w-[80%]">
                     {lonks.map((link) => (
@@ -37,7 +37,7 @@ function Home() {
                         </Link>
                     ))}
                     </div>
-                    <Link to={""} className="titulo">Wefund</Link>
+                    <Link to={""} className="titulo">WeFund</Link>
                     <div className="flex items-center justify-evenly w-[80%]">
                     {links.map((link) => (
                         <Link className="cursor-pointer" to={`/${link.id}` } key={link.id}>
