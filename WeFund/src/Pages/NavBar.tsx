@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom"
+import './Home.css';
+
 function Home() {
 
     const links = 
@@ -25,8 +27,8 @@ function Home() {
         ] 
     
     return (
-        
-            <div className="w-screen top-2 h-20 border border-x-cyan-100 rounded-[40px]">
+            
+            <div className="w-screen top-2 h-20 border border-x-cyan-100 rounded-[300px]">
                 <div className="h-[100%] flex items-center pl-4">
                     <div className="flex items-center justify-evenly w-[80%]">
                     {lonks.map((link) => (
@@ -35,7 +37,7 @@ function Home() {
                         </Link>
                     ))}
                     </div>
-                    <Link to={""}>Wefund</Link>
+                    <Link to={""} className="titulo">Wefund</Link>
                     <div className="flex items-center justify-evenly w-[80%]">
                     {links.map((link) => (
                         <Link className="cursor-pointer" to={`/${link.id}` } key={link.id}>
@@ -44,7 +46,6 @@ function Home() {
                     ))}
                     </div>
                 </div>
-                
             </div>
         
     );
