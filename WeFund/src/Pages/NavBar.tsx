@@ -28,7 +28,7 @@ function Home() {
     
     return (
             
-            <div className="max-w-screen-xl mx-auto top-2 h-20 border border-x-cyan-100 rounded-[300px]" style={{marginTop:'20px', backgroundColor:'white'}}>
+            <div className="max-w-screen-xl mx-auto top-2 h-20 border border-x-cyan-100 rounded-[300px] z-50 shadow-md" style={{marginTop:'20px', backgroundColor:'white'}}>
                 <div className="h-[100%] flex items-center pl-4">
                     <div className="flex items-center justify-evenly w-[80%]">
                     {lonks.map((link) => (
