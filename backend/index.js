@@ -1,263 +1,128 @@
-const { addFirebaseAuth } = require('./firebase/firebase_auth');
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-dotenv.config();
 const path = require('path');
-const fetch = require('node-fetch');
-const { Telegraf } = require('telegraf');
+const { auth, database } = require('./firebase/firebase'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
 
-const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
-const base = "https://api-m.sandbox.paypal.com";
+
+// Cargar variables de entorno desde el archivo .env
+dotenv.config();
+
+// Obtener el puerto desde las variables de entorno o usar el puerto 3000 como valor predeterminado
+const PORT = process.env.PORT ;
+
+// Crear una instancia de la aplicación Express
 const app = express();
 
-app.disable('x-powered-by');
-app.use(cors());
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Configuración de la aplicación
+app.disable('x-powered-by'); // Deshabilitar la cabecera X-Powered-By
+app.use(cors()); // Habilitar CORS para permitir solicitudes desde cualquier origen
+app.use(express.static(path.join(__dirname, "public"))); // Servir archivos estáticos desde la carpeta "public"
+app.use(express.json()); // Analizar solicitudes con formato JSON
+app.use(express.urlencoded({ extended: true })); // Analizar solicitudes con formato de formulario
 
-app.get('/favicon.ico', (req, res) => res.status(204));
+// Ruta para el favicon.ico
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
+// Ruta para la página de inicio
+app.get('/', (req, res) => {
+    console.log("entro")
 
-
-app.post("/home", (req, res) => {
-  console.log("Received request to /home del post");
-  console.log(req.body);
-  let n = addFirebaseAuth(req.body.name, req.body.email);
-  if (n) {
-    res.send("Form submission received!");
-  } else {
-    res.send("Error in form submission");
-  }
-});
-
-app.post("/api/orders", async (req, res) => {
+}
+);
+app.post('/pagoMovilAgregar', async (req, res) => {
+    console.log("entro")
     try {
-    console.log("Received request to /api");
-      const { cart } = req.body;
-      const { jsonResponse, httpStatusCode } = await createOrder(cart);
-      res.status(httpStatusCode).json(jsonResponse);
+        const data = req.body;
+        
+        const userRef = await database.collection('Pagos').add(data);
+        console.log("entro")
+        res.status(200).json({ message: 'Data received successfully' })
     } catch (error) {
-      console.error("Failed to create order:", error);
-      res.status(500).json({ error: "Failed to create order." });
+        console.error('Error al agregar documento: ', error);
+        res.status(500).send('Error al agregar documento');
     }
-  });
-  
-  /**
-   * Capture payment for the created order to complete the transaction.
-   */
-  const captureOrder = async (orderID) => {
-    const accessToken = await generateAccessToken();
-    const url = `${base}/v2/checkout/orders/${orderID}/capture`;
-  
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  
-    return handleResponse(response);
-  };
-  
-  // CaptureOrder route
-  app.post("/api/orders/:orderID/capture", async (req, res) => {
+    
+
+})
+app.post('/pagoMovilConfirmar', async (req, res) => {
+    console.log("entro")
     try {
-      const { orderID } = req.params;
-      const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
-      res.status(httpStatusCode).json(jsonResponse);
+        const data = req.body;
+        const id= data.id;
+        delete data.id;
+        const userRef = await database.collection('Pagos').doc(id).update({validate: true});
+        console.log("entro")
+        res.status(200).json({ message: 'Data received successfully' })
     } catch (error) {
-      console.error("Failed to capture order:", error);
-      res.status(500).json({ error: "Failed to capture order." });
+        console.error('Error al agregar documento: ', error);
+        res.status(500).send('Error al agregar documento');
     }
-  });
-  
-  // Serve index.html
-  app.get("/", (req, res) => {
-    res.sendFile(path.resolve("./checkout.html"));
-  });
-  
-  app.listen(PORT, () => {
-    console.log(`Node server listening at http://localhost:${PORT}/`);
-  });
+    
+
+})
+
+app.get('/pagosSinConfirmacion', async (req, res) => {
+    
+    try {
+        const usersRef = database.collection('Pagos');
+        const snapshot = await usersRef.where('validate', '==', false).get();
+        
+        if (snapshot.empty) {
+            res.status(404).send('No matching documents.');
+            return;
+        }
+
+        const users = [];
+        snapshot.forEach(doc => {
+            users.push({ id: doc.id, ...doc.data() });
+        });
+        const data= {"PaywithoutCheck": users}
+        console.log(data)
+
+        res.status(200).json(data);
+    } catch (error) {
+        console.error('Error getting documents: ', error);
+        res.status(500).send('Error getting documents');
+    }
+
+
+});  
+app.post('/pagosComprobacion', async (req, res) => {
+
+
+})
+
+app.post('/registerUser', async (req, res) => {
+    // console.log("entro")
+    // console.log()
+    // const array= req.body["Datos"];
+    try {
+       const array= req.body["Datos"]; 
+       for (let x=0; x< array.length; x++) {
+        const userRef = await database.collection('Dato').add(array[x]) 
+        res.status(200).send(`Documento agregado con ID: ${userRef.id}`);
+    }      
+
+
+    } catch (error) {
+        console.error('Error al agregar documento: ', error);
+        res.status(500).send('Error al agregar documento');
+    }
+   
+    // // addFirebaseAuth(req.body)
+    // res.send("login")
+}
+);
+
+// Middleware para manejar solicitudes no encontradas (404)
 app.use((req, res, next) => {
-  console.log(`Request to ${req.url} returned 404`);
-  res.status(404).send("404: Not Found");
+    console.log("entro")
+    console.log(`Request to ${req.url} returned 404`);
+    res.status(404).sendFile(path.join(__dirname, "public", "404.html"));
 });
 
- 
-/**
- * Generate an OAuth 2.0 access token for authenticating with PayPal REST APIs.
- */
-const generateAccessToken = async () => {
-  try {
-    if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
-      throw new Error("MISSING_API_CREDENTIALS");
-    }
-    const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString("base64");
-    const response = await fetch(`${base}/v1/oauth2/token`, {
-      method: "POST",
-      body: "grant_type=client_credentials",
-      headers: {
-        Authorization: `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    });
-
-    const data = await response.json();
-    return data.access_token;
-  } catch (error) {
-    console.error("Failed to generate Access Token:", error);
-  }
-};
-
-const handleResponse = async (response) => {
-  try {
-    const jsonResponse = await response.json();
-    return {
-      jsonResponse,
-      httpStatusCode: response.status,
-    };
-  } catch (err) {
-    const errorMessage = await response.text();
-    throw new Error(errorMessage);
-  }
-};
-
-/**
- * Create an order to start the transaction.
- */
-const createOrder = async (cart) => {
-  console.log("Shopping cart information passed from the frontend createOrder() callback:", cart);
-  const accessToken = await generateAccessToken();
-  const url = `${base}/v2/checkout/orders`;
-
-  const payload = {
-    intent: "CAPTURE",
-    purchase_units: [
-      {
-        amount: {
-          currency_code: "USD",
-          value: "100",
-        },
-      },
-    ],
-    shipping: {
-      options: [
-        {
-          id: "001",
-          type: "SHIPPING",
-          label: "ground",
-          selected: true,
-          amount: {
-            currency_code: "USD",
-            value: "0",
-          },
-        },
-        {
-          id: "002",
-          type: "SHIPPING",
-          label: "Expedite",
-          selected: false,
-          amount: {
-            currency_code: "USD",
-            value: "100",
-          },
-        },
-      ],
-    },
-  };
-
-  const response = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-
-  return handleResponse(response);
-};
-
-
-
-const bot = new Telegraf('6916549203:AAHC2CL6EkicESu8dsjbiRvOrf2NI257YuE');
-let datos = [{
-  nombre: 'Jesus',
-  email: 'Jesus.101201@gmail.com'
-
-}, {
-  nombre: 'Manuel',
-  email: 'Manu@gmail.com'
-
-}, {
-  nombre: 'Luis',
-  email: 'luis@gmail.com'
-
-}];
-
-const allowedUsers = [1045919378, 987654321]; // Reemplaza con los IDs de usuario permitidos
-
-// Middleware para verificar si el usuario está permitido
-bot.use((ctx, next) => {
-  if (ctx.from && allowedUsers.includes(ctx.from.id)) {
-    console.log('Usuario permitido:', ctx.from.id);
-    return next();
-  } else {
-    ctx.reply('Lo siento, no tienes permiso para usar este bot.');
-  }
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
-
-// Comando /start
-bot.start((ctx) => {
-  const options = datos.map((persona, index) => `${index + 1}. ${persona.nombre}`).join('\n');
-  ctx.reply(`Bienvenido! Selecciona una opción:\n${options}\n${datos.length + 1}. Desea salir\n\nEscribe el número de la opción que deseas elegir:`);
-});
-
-// Middleware para manejar mensajes de texto
-bot.on('text', (ctx, next) => {
-  const userInput = ctx.message.text.trim();
-
-  // Verificar si el usuario selecciona la opción para salir
-  if (userInput === (datos.length + 1).toString()) {
-    ctx.reply('Has seleccionado salir.');
-    return; // Salir sin realizar más acciones
-  }
-
-  // Verificar si la entrada del usuario es un número válido
-  const optionIndex = parseInt(userInput) - 1;
-  if (!isNaN(optionIndex) && optionIndex >= 0 && optionIndex < datos.length) {
-    const selectedOption = datos[optionIndex];
-    ctx.reply(`Has seleccionado: \nNombre: ${selectedOption.nombre}\nEmail: ${selectedOption.email}`, {
-      reply_markup: {
-        inline_keyboard: [[{ text: 'Eliminar', callback_data: `eliminar_${optionIndex}` }]]
-      }
-    });
-  } else {
-    ctx.reply('Opción no válida. Por favor, selecciona una opción válida.');
-  }
-});
-
-// Manejo de callback para eliminar opción
-bot.action(/^eliminar_(\d+)$/, (ctx) => {
-  const optionIndex = parseInt(ctx.match[1]);
-  if (!isNaN(optionIndex) && optionIndex >= 0 && optionIndex < datos.length) {
-    datos.splice(optionIndex, 1);
-    ctx.reply('La opción ha sido eliminada.');
-    console.log(datos);
-  } else {
-    ctx.reply('Error al eliminar la opción.');
-  }
-});
-
-// Inicia el bot
-bot.launch()
-  .then(() => {
-    console.log('Bot iniciado exitosamente');
-  })
-  .catch((err) => {
-    console.error('Error al iniciar el bot:', err);
-  });

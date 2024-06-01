@@ -1,4 +1,4 @@
-const { addDoc, collection } = require('firebase/firestore');
+
 const { database } = require('./firebase');
 
 
@@ -6,7 +6,12 @@ const { database } = require('./firebase');
 const addFirebaseAuth = async (name, other) => {
     console.log("Adding user to Firebase");
     try {
-      const docRef = await addDoc(collection(database, 'users'), { name, other });
+      const docRef = await database.collection('nombre-de-tu-coleccion').add(
+        {
+          name: name,
+          other: other
+        }
+      );
       console.log("Document written with ID: ", docRef.id);
       return docRef.id;
     } catch (e) {

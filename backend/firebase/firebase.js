@@ -1,28 +1,29 @@
-// Import the functions you need from the SDKs you need
-const { initializeApp } = require('firebase/app');
-const { getFirestore } = require('firebase/firestore');
-const { getAuth,GoogleAuthProvider} = require('firebase/auth');
-const { getStorage } = require('firebase/storage');
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/serviceAccountKey.json'); // Asegúrate de que la ruta sea correcta
+require('dotenv').config();
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyD-f0QYx9aW3eslgdQdoQ1_-kg3jhhG6WY",
-  authDomain: "wefund-2c2ea.firebaseapp.com",
-  projectId: "wefund-2c2ea",
-  storageBucket: "wefund-2c2ea.appspot.com",
-  messagingSenderId: "320922340115",
-  appId: "1:320922340115:web:550b80d58e808b03eaa8e6"
+const serviceAccount = {
+  type: process.env.GOOGLE_TYPE,
+  project_id: process.env.GOOGLE_PROJECT_ID,
+  private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  client_email: process.env.GOOGLE_CLIENT_EMAIL,
+  client_id: process.env.GOOGLE_CLIENT_ID,
+  auth_uri: process.env.GOOGLE_AUTH_URI,
+  token_uri: process.env.GOOGLE_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
+  client_x509_cert_url: process.env.GOOGLE_CLIENT_X509_CERT_URL,
+  universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
- const auth = getAuth(app);
- const googleProvider = new GoogleAuthProvider();
- const database = getFirestore(app);
- const storage = getStorage(app);
 
-module.exports = { auth, googleProvider, database, storage };
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
 
+});
+
+const auth = admin.auth();
+const database = admin.firestore();
+
+
+module.exports = { auth, database };
