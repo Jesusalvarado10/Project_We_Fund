@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom'
 import { homeURL } from './constants/url'
-import Home from './Pages/Home'
+
+import { Layout } from './Pages/layout/layout'
+import Home from './Pages/home/Home'
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
- <BrowserRouter>
+     <BrowserRouter>
           <Routes >
-            {/* <Route element={<Layout />}> */}
+            <Route element={<Layout />}>
               <Route path={homeURL} element={<Home />}></Route>
              
               <Route path='/' element={<Navigate to={homeURL} />} /> {/* Redirige automáticamente a /home */}
-            {/* </Route> */}
+            </Route>
           </Routes>
         </BrowserRouter>
   </React.StrictMode>
