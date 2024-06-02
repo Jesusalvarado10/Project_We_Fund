@@ -8,7 +8,7 @@ function Home() {
         <div className="fixed top-0 left-0 w-full z-10">
 
         </div>
-        <img src={fotos} alt="background" className="fixed top-0 left-0 w-screen h-screen z-[-1] object-cover" />
+        <img src={fotos} alt="background" className="w-screen h-screen " />
         <div className="relative z-10" style={{ marginTop: '100vh', backgroundColor: 'white' }}>
             <h1>Tu texto aquí</h1>
             <h2>Hola</h2>
