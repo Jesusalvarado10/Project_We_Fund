@@ -39,20 +39,25 @@ function Home() {
         <img src={op2} alt="background" className="w-screen h-screen object-cover" />   
       </div>
       <div>
-        <div className="relative w-full text-center text-4xl font-bold text-black">
+        <div className="relative w-full text-center text-4xl font-bold text-white">
           "Si ayudo a una sola persona a tener esperanza, no habré vivido en vano."
         </div>
       </div>
       <div className="absolute bg-green-500" >
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 gap-4 mt-10 mb-10'>
         <div>
-        <img src={bambi} alt="background" className=" w-72 h-72  justify-center"/></div>  
+        <img src={bambi} alt="background" className="w-72 h-72 ml-40"/>
+          </div>
+          <div className="mr-20">
+          <h4 className="text-4xl text-white">Hogar Bambi Venezuela</h4>
+          <p>.</p>
+          <h1 className = "text-white">En Hogar Bambi brindamos atención integral con enfoque sistémico a niños y niñas de 0 a 18 años, en nuestras cinco casas ubicadas en San Bernardino. Somos una organización que trabaja por la infancia en estado de vulnerabilidad, proporcionando un entorno seguro, respetuoso y amoroso, mientras restituimos sus derechos, trabajando con las familias y la comunidad.</h1>
+          <p>.</p>
           <div>
-          <h4>Hogares Bambi</h4>
-          <p>.</p>
-          <h1>Hogar Bambi Darién inicia su labor el 8 de noviembre de 1999 con una cobertura de 15 niños y con una planta de cinco empleados para su atención, bajo la dirección por un año del señor Víctor Hugo Tirado en la sede ubicada en la Calle 11 No 10-38 de Calima El Darién Valle del Cauca – Colombia, donde funcionó por un espacio de dos años. El 17 de agosto de 2000 la señora Gladys Meneses asumió la dirección del Hogar.</h1>
-          <p>.</p>
-          <button className='button'>Recaudado</button>
+  <button className='button mr-4'>$13.457,09 recaudados</button>
+  <button className='button'>Donar</button>
+</div>
+   
           </div>
         </div>
       </div>
