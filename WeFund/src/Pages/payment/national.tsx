@@ -16,7 +16,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
         validate:false
     }
     try {
-        const response = await fetch("https://project-we-fund-qyux.onrender.com/pagoMovilAgregar ", {
+        const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoMovilAgregar ", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
