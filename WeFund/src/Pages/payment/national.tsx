@@ -26,7 +26,10 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     })
     .then((response) => {response.json()
         console.log("Success:", data);
-    })}
+
+    })
+console.log("Success:", response);
+}
     catch (error) {
         console.error("Error:", error);
     }

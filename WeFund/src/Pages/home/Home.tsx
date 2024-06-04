@@ -1,4 +1,4 @@
-import fotos from '../../assets/fotos.jpg';
+
 import educationIcon from '../../assets/libro.png';
 import healthIcon from '../../assets/latido-del-corazon.png';
 import foodIcon from '../../assets/dieta.png';
@@ -35,16 +35,18 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="relative z-10 h-screen flex items-center justify-center">
-        <img src={op2} alt="background" className="w-screen h-screen object-cover" />   
-      </div>
+      <div className="relative h-screen flex items-center justify-center">
+  <img src={op2} alt="background" className="absolute w-screen h-screen object-cover z-0 " />
+  {/* <div className="relative z-10 text-white text-center bg-black bg-opacity-70 p-4 rounded">
+    "Si ayudo a una sola persona a tener esperanza, no habré vivido en vano."
+  </div> */}
+
+</div>
       <div>
-        <div className="relative w-full text-center text-4xl font-bold text-white">
-          "Si ayudo a una sola persona a tener esperanza, no habré vivido en vano."
-        </div>
+      
       </div>
-      <div className="absolute bg-green-500" >
-        <div className='grid grid-cols-2 gap-4 mt-10 mb-10'>
+      <div className="absolute bg-green-500  w-full h-3/4 flex items-center justify-center rounded-lg" >
+        <div className='grid grid-cols-2 gap-4  '>
         <div>
         <img src={bambi} alt="background" className="w-72 h-72 ml-40"/>
           </div>

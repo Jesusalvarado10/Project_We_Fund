@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { homeURL } from "../../constants/url";
-import { useAuth } from "../../context/contex";
+
+
+
 import "./NavBar.css"
 export function NavBar() {
-  const navigate = useNavigate();
-  const { user,logout } = useAuth()
-
+ 
 
   return (
     <nav className="bg-green-500 text-white px-4 py-2 flex justify-between items-center md:px-8 md:py-4">
