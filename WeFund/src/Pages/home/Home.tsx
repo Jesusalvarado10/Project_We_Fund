@@ -45,10 +45,14 @@ function Home() {
       </div>
       <div className="absolute bg-green-500" >
         <div className='grid grid-cols-2 gap-4'>
-        <img src={bambi} alt="background" className="h-screen object-cover w-72 h-72"  />  
+        <div>
+        <img src={bambi} alt="background" className=" w-72 h-72  justify-center"/></div>  
           <div>
           <h4>Hogares Bambi</h4>
+          <p>.</p>
           <h1>Hogar Bambi Darién inicia su labor el 8 de noviembre de 1999 con una cobertura de 15 niños y con una planta de cinco empleados para su atención, bajo la dirección por un año del señor Víctor Hugo Tirado en la sede ubicada en la Calle 11 No 10-38 de Calima El Darién Valle del Cauca – Colombia, donde funcionó por un espacio de dos años. El 17 de agosto de 2000 la señora Gladys Meneses asumió la dirección del Hogar.</h1>
+          <p>.</p>
+          <button className='button'>Recaudado</button>
           </div>
         </div>
       </div>
