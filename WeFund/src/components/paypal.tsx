@@ -86,8 +86,25 @@ function ButttonPaypal() {
                 // (3) Successful transaction -> Show confirmation or thank you message
                 // Or go to another URL:  actions.redirect('thank_you.html');
                 const transaction =orderData.purchase_units[0].payments.captures[0];
-            
-             
+                
+                const jsonTransaction = {
+                  "name": orderData.payer.name.given_name,
+                  "last_name": orderData.payer.name.surname,
+                  "amount": transaction.amount.value,
+                  "email": orderData.payer.email_address,
+                  "date" : transaction.create_time,
+
+                }
+                console.log(jsonTransaction);
+                const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoPaypall", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(jsonTransaction),
+                });
+                console.log(response);
+
                 setMessage(
                   `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`,
                 );
