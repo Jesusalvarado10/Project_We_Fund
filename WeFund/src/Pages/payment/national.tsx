@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ButttonPaypal from "../../components/paypal";
 
 export function National() {
 const [phone, setPhone] = useState("");
@@ -16,7 +17,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
         validate:false
     }
     try {
-        const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoMovilAgregar ", {
+        const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoMovil ", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -80,6 +81,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
                 Pagar
             </button>
         </div>
+        <ButttonPaypal></ButttonPaypal>
         </form>
       
     )
