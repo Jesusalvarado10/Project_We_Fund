@@ -4,12 +4,13 @@ import healthIcon from '../../assets/latido-del-corazon.png';
 import foodIcon from '../../assets/dieta.png';
 import clothingIcon from '../../assets/ropa-limpia.png';
 import logisticsIcon from '../../assets/deportes-con-balones.png';
-import "./Home.css"
+import "./Home.css" 
+import op2 from '../../assets/op2.png';
 
 function Home() {
   return (
     <>
-      <div className="bg-white shadow-md z-10 w-full" style={{ marginTop: '4rem' }}>
+      <div className="bg-white shadow-md z-10 w-full" style={{ marginTop: '0.5rem' }}>
         <div className="grid grid-cols-5 items-center justify-center gap-4 py-2 md:py-3 px-4 md:px-8">
           <div className="flex flex-col items-center">
             <img src={educationIcon} alt="Educación" className="w-12 h-12" />
@@ -34,13 +35,18 @@ function Home() {
         </div>
       </div>
       <div className="relative z-10 h-screen flex items-center justify-center">
-        <img src={fotos} alt="background" className="w-screen h-screen object-cover" />
-        <div className="absolute w-full text-center text-4xl font-bold text-black">
+        <img src={op2} alt="background" className="w-screen h-screen object-cover" />   
+      </div>
+      <div>
+        <div className="relative w-full text-center text-4xl font-bold text-black">
           "Si ayudo a una sola persona a tener esperanza, no habré vivido en vano."
         </div>
       </div>
-      <div className="relative z-10" style={{ marginTop: '100vh', backgroundColor: 'white' }}>
+      <div className="absolute">
+        <h2 >hola</h2>
       </div>
+      
+      
     </>
   );
 }
