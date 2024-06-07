@@ -11,18 +11,22 @@ export function NavBar() {
         WeFund
       </a>
       <div className="hidden md:flex space-x-6">
-        <a href="#" className="hover:text-gray-300">
+      <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
+        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
           Quienes somos
         </a>
-        <a href="#" className="hover:text-gray-300">
+      </div>
+      <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
+        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
           Donar
         </a>
-        <a href="#" className="hover:text-gray-300">
-          Iniciar sesion
-        </a>        
-        <a href="#" className="hover:text-gray-300">
-          Registrarse
+      </div>
+      <div className="group p-1  rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
+        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
+          Iniciar sesión
         </a>
+      </div>
+       
 
       </div>
       <div className="relative">
