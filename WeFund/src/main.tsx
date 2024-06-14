@@ -8,6 +8,7 @@ import { Layout } from './Pages/layout/layout'
 import Home from './Pages/home/Home'
 import { National } from './Pages/payment/national'
 import Inicio from './Pages/IniciarSesion/IniciarSesion'
+import Registro from './Pages/IniciarSesion/Registro'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={homeURL} element={<Home />}></Route>
               <Route path={nationalURL} element={<National></National>}></Route>
               <Route path='/login' element={<Inicio></Inicio>}></Route>
+              <Route path='/registro' element={<Registro></Registro>}></Route>
               <Route path='/' element={<Navigate to={homeURL} />} /> {/* Redirige automáticamente a /home */}
             </Route>
           </Routes>
