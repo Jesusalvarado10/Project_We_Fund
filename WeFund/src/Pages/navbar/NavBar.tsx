@@ -22,7 +22,7 @@ export function NavBar() {
         </a>
       </div>
       <div className="group p-1  rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
-        <a href="/iniciosesion" className=" group-hover:text-gray-100 transition-colors duration-300">
+        <a href="/login" className=" group-hover:text-gray-100 transition-colors duration-300">
           Iniciar sesión
         </a>
       </div>

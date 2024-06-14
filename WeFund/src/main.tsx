@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <Route element={<Layout />}>
               <Route path={homeURL} element={<Home />}></Route>
               <Route path={nationalURL} element={<National></National>}></Route>
-              <Route path='/iniciosesion' element={<Inicio></Inicio>}></Route>
+              <Route path='/login' element={<Inicio></Inicio>}></Route>
               <Route path='/' element={<Navigate to={homeURL} />} /> {/* Redirige automáticamente a /home */}
             </Route>
           </Routes>
