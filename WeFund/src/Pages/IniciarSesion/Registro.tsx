@@ -19,7 +19,7 @@ function Registro() {
                            <FaGoogle className="text-sm"/>
                         </a>
                     </div>{/* Spcial Login Section */}
-                    <p className="text-gray-400"> or use your email account</p>
+                    <p className="text-gray-400"> usa tu cuenta de email</p>
                     <div className="flex flex-col items-center">
                         <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3">
                             <LiaAddressCard/>
