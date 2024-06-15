@@ -23,6 +23,6 @@ admin.initializeApp({
 
 const auth = admin.auth();
 const database = admin.firestore();
+const messaging = admin.messaging();
 
-
-module.exports = { auth, database };
+module.exports = { auth, database,messaging };
