@@ -1,12 +1,17 @@
 
 
 
+import { useEffect, useState } from "react";
+import { loginURL } from "../../constants/url";
+import { useAuth } from "../../context/contex";
 import "./NavBar.css"
 export function NavBar() {
+  const {color}=useAuth()
+  const [colorBg, setColorBg] = useState(`bg-${color}`)
  
 
   return (
-    <nav className="bg-green-500 text-white px-4 py-2 flex justify-between items-center md:px-8 md:py-4">
+    <nav className={`bg-green-500 text-white px-4 py-2 flex justify-between items-center md:px-8 md:py-4`}>
       <a href="/" className="text-2xl font-bold md:text-3xl">
         WeFund
       </a>
@@ -22,7 +27,7 @@ export function NavBar() {
         </a>
       </div>
       <div className="group p-1  rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
-        <a href="/login" className=" group-hover:text-gray-100 transition-colors duration-300">
+        <a href={loginURL} className=" group-hover:text-gray-100 transition-colors duration-300">
           Iniciar sesión
         </a>
       </div>

@@ -4,10 +4,12 @@ import  {User}  from '../Class/user';
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  color: string;
 
   user: User | null; // Añadimos la información del usuario
   login: (user: User ) => void; // Pasamos la información del usuario al iniciar sesión
   logout: () => void;
+  changeColor: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,9 +27,12 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [color, setColor] = useState('green-500'); // Añadimos el color
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null); // Inicialmente no hay usuario
-
+  const changeColor = () => {
+    setColor("customPurple");
+  }
   const login = (loggedInUser: User ) => {
     // Aquí realizarías la lógica de autenticación, como enviar credenciales al servidor
     // y actualizar isAuthenticated basado en la respuesta
@@ -45,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user  , login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user  , login, logout ,color,changeColor }}>
       {children}
     </AuthContext.Provider>
   );
