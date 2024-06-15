@@ -6,12 +6,12 @@ dotenv.config();
 const path = require('path');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
-const urlBackend= process.env.URL_BACKEND;
+const urlBackendlocal= process.env.URL_BACKEND;
 const axios = require('axios');
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 const app = express();
-const urlBackendlocal="http://localhost:3000";
+const urlBackend="http://localhost:3000";
 
 
 
@@ -22,6 +22,58 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
+
+app.post('/signUp', async (req, res) => {
+  const data = req.body;
+console.log(JSON.stringify(data))
+console.log(data)
+try {
+  // Envía el objeto `data` al otro servidor en localhost
+  const response = await fetch(`${urlBackend}/signUp`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+
+  // Obtén la respuesta del otro servidor
+  const responseData = await response.json();
+
+  // Reenvía la respuesta del otro servidor al cliente
+  res.status(response.status).json(responseData);
+} catch (error) {
+  console.error('Error sending data to another server:', error);
+  res.status(500).send('Error sending data to another server');
+}
+});
+
+
+app.post('/logIn', async (req, res) => {
+  const data = req.body;
+
+  try {
+    // Envía el objeto `data` al otro servidor en localhost
+    const response = await fetch(`${urlBackend}/logIn`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    // Obtén la respuesta del otro servidor
+    const responseData = await response.json();
+
+    // Envía la respuesta del otro servidor al cliente
+    res.status(response.status).send(responseData);
+} catch (error) {
+    console.error('Error sending data to another server:', error);
+    res.status(500).send('Error sending data to another server');
+}
+});
+  
+
 app.post('/pagoPaypall', async (req, res) => {
   const data = req.body;
 
