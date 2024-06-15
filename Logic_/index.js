@@ -6,12 +6,13 @@ dotenv.config();
 const path = require('path');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
-const urlBackendlocal= process.env.URL_BACKEND;
+const urlBackend= process.env.URL_BACKEND;
 const axios = require('axios');
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 const app = express();
-const urlBackend="http://localhost:3000";
+const urlBackendlocal="http://localhost:3000";
+
 
 
 
