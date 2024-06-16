@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { User } from '../../Class/user';
 import { useAuth } from '../../context/contex';
 import { useNavigate } from 'react-router-dom';
-import { registerURL } from '../../constants/url';
+import { registerURL, registerURLFund } from '../../constants/url';
 interface LoginResponse {
     ok: boolean;
     userId: {
@@ -99,7 +99,7 @@ function Inicio() {
                 <h2 className="text-3xl font-bold mb-2">Hola!</h2>
                 <div className="border-2 w-10 border-white inline-block mb-2"></div>
                 <p className="mb-2">Completa tus datos personales y comienza la aventura en Wefund.</p>
-                <a href={registerURL} className={`border-2 border-white rounded-full px-6 py-2 inline-block font-senibold hover:bg-white  ${
+                <a href={validate ? registerURLFund :registerURL} className={`border-2 border-white rounded-full px-6 py-2 inline-block font-senibold hover:bg-white  ${
               validate ? 'hover:text-customPurple' : 'hover:text-green-500'
             }`}>Registro</a>
             </div>{/* Sign up */}
