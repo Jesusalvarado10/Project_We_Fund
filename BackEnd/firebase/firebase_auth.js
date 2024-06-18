@@ -52,13 +52,27 @@ async function signUp(data) {
     });
     console.log(userRecord)
     const userId = userRecord.uid;
-  
-    // Agrega los datos del usuario a la colección "users" en Firestore
-    await database.collection('users').doc(userId).set({
+ 
+    let colection;
+   if (data.user==false){
+    colection= "fundaciones"
+    await database.collection(colection).doc(userId).set({
+      tittle: data.tittle,
+      type: data.type,
+      email: data.email,
+      description: data.description,
+    });
+   }
+    else{
+      colection= "users"
+         await database.collection(colection).doc(userId).set({
       email: data.email,
       name: data.name,
       lastname: data.last_name,
     });
+    }
+    // Agrega los datos del usuario a la colección "users" en Firestore
+ 
 
     return userId;
   } catch (error) {
@@ -85,3 +99,4 @@ async function emailVerification(email) {
 }
 
 module.exports = { signUp, logIn };
+
