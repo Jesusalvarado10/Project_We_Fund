@@ -10,9 +10,9 @@ export function Layout() {
     
     return (
         <AuthProvider>
-        <main>
+        <main data-theme="light">
             <NavBar />
-            <section  >
+            <section  className="">
                 <Outlet />
                
             </section>

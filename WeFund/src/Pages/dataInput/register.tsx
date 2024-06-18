@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import { nacionality } from '../../constants/url';
 import { FlagIcon, FlagIconCode } from 'react-flag-kit';
+import { uploadFile } from '../../Firebase/auth';
 
 function Registro() {
+    const [file, setFile] = useState<File | null>(null);
     const [country, setCountry] = useState<string>("");
     const [code, setCode] = useState<string>(""); // [variable, funcion que actualiza la variable
     const [phone, setPhone] = useState<string>(""); // [variable, funcion que actualiza la variable
@@ -70,16 +72,33 @@ function Registro() {
                 last_name: last_name,
                 email: email,
                 password: password,
+                user: true,
       
             }),
             });
-        if (response.ok) {
-            navigate('/login');
-            console.log(response)
-
-
+            if (response.ok) {
+                response.json().then((data) => {
+                    console.log(data);
+                    if (!file) {
+                        return;
+                    }
+                    uploadFile(data.userId, file);
+                });
+    
+                navigate('/login');
+                console.log(response)
+    
     }
     }
+    const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+          // Almacena todos los archivos seleccionados en el estado files
+        
+          setFile(event.target.files[0]);
+        console.log(event.target.files[0])  
+          // También puedes realizar otras operaciones con los archivos aquí si es necesario
+        }
+      };
 
   return (
     <><div className='flex items-center justify-center'>
@@ -139,7 +158,7 @@ function Registro() {
                             value={country}
                             onChange={handleChange}
                          
-                            className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                             <option  value="">Choose a country</option>
                             {Object.values(nacionality).map((countryObj) => (
@@ -155,10 +174,10 @@ function Registro() {
                                     <p className='text-black'>{numberCountry}</p>
                                 </div>
                                 )}
-                            <input type="number" name="nombre" placeholder='Numero'value={phone} onChange={(ev) => setPhone(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1"></input>
-                        </div>
+                        <input type="file"  onChange={handleChange1}className="file-input w-full max-w-xs bg-customPurple" accept="image/*" />
+                    </div>
                         <div className=" w-64 p-2 flex items-center n-2 mt-4 ">  
-                        <input type="file" className="file-input file-input-ghost w-full max-w-xs" />                
+                        <input type="file" className="file-input w-full max-w-xs" />                
                         </div>
                          
              </div>

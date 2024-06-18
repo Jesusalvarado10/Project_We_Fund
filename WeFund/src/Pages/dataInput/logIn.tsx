@@ -24,11 +24,6 @@ function Inicio() {
     const [password, setPassword] = useState('');
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
-
-        const tokenID= await signInWithEmailAndPasswordAndFetchUserData(email, password)
-        console.log(  tokenID)
-
-     
         
         const response = await fetch('http://localhost:8888/logIn', {
           method: 'POST',
@@ -36,7 +31,8 @@ function Inicio() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            tokenID: tokenID,
+            email: email,
+            password: password,
           }),
         });
         
@@ -50,6 +46,10 @@ function Inicio() {
           login(user);
           navigate('/');
 
+        }
+        else{
+          console.log('Error')
+        
         }
     }
     const handleChange = () => {
