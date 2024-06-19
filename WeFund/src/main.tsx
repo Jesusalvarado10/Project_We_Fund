@@ -10,6 +10,7 @@ import { National } from './Pages/payment/national'
 import Inicio from './Pages/dataInput/logIn'
 import Registro from './Pages/dataInput/register'
 import RegistroFundacion from './Pages/dataInput/registerFundacion'
+import Menu from './Pages/Menu/Menu'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={loginURL} element={<Inicio></Inicio>}></Route>
               <Route path={registerURL} element={<Registro></Registro>}></Route>
               <Route path='/' element={<Navigate to={homeURL} />} /> {/* Redirige automáticamente a /home */}
+              <Route path='/menu' element={<Menu></Menu>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
