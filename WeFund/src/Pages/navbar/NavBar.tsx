@@ -2,7 +2,8 @@
 
 
 import { useEffect, useState } from "react";
-import { ideaURL, loginURL } from "../../constants/url";
+import { ideaURL, loginURL, buscarURL } from "../../constants/url";
+
 import { useAuth } from "../../context/contex";
 import "./NavBar.css"
 export function NavBar() {
@@ -24,6 +25,11 @@ export function NavBar() {
       <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
         <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
           Donar
+        </a>
+      </div>
+      <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
+        <a href={buscarURL} className=" group-hover:text-gray-100 transition-colors duration-300">
+          Fundaciones
         </a>
       </div>
       <div className="group p-1  rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">

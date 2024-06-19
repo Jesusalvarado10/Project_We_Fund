@@ -26,3 +26,4 @@ export const nacionality = {
 };
 
 export const ideaURL = "/idea"
+export const buscarURL = "/buscar"
