@@ -1,18 +1,20 @@
-import {FaGoogle, FaEnvelope, FaRegEnvelope} from 'react-icons/fa'
-import {MdLockOutline} from 'react-icons/md'
-import {LiaAddressCard } from "react-icons/lia";
+import { FaGoogle, FaEnvelope, FaRegEnvelope } from 'react-icons/fa';
+import { MdLockOutline } from 'react-icons/md';
+import { LiaAddressCard } from "react-icons/lia";
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { FlagIcon, FlagIconCode } from 'react-flag-kit';
+import fotos from '../../assets/fotos.jpg';
+import './Perfil.css';
 
 function Perfil() {
     const [country, setCountry] = useState<string>("");
-    const [code, setCode] = useState<string>(""); // [variable, funcion que actualiza la variable
-    const [phone, setPhone] = useState<string>(""); // [variable, funcion que actualiza la variable
-    const [numberCountry, setNumberCountry] = useState<string>(""); // [variable, funcion que actualiza la variable
-    
-    
+    const [code, setCode] = useState<string>(""); 
+    const [phone, setPhone] = useState<string>(""); 
+    const [numberCountry, setNumberCountry] = useState<string>(""); 
+    const [profileImage, setProfileImage] = useState<string>(fotos); 
+
     const nacionality = {  
         "Argentina": { "code": "AR", "dialCode": "+54", "name": "Argentina" },
         "Bolivia": { "code": "BO", "dialCode": "+591", "name": "Bolivia" },
@@ -33,110 +35,117 @@ function Perfil() {
         "Dominican Republic": { "code": "DO", "dialCode": "+1-809", "name": "Dominican Republic" },
         "Uruguay": { "code": "UY", "dialCode": "+598", "name": "Uruguay" },
         "Venezuela": { "code": "VE", "dialCode": "+58", "name": "Venezuela" }
-      };
+    };
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedCountryCode = event.target.value; // Obtiene el código del país seleccionado
-        setCountry(selectedCountryCode); // Actualiza el estado country con el código del país seleccionado
-        console.log(selectedCountryCode);
-        // Verifica si el valor seleccionado no está vacío
+        const selectedCountryCode = event.target.value;
+        setCountry(selectedCountryCode);
         if (selectedCountryCode !== "") {
-          // Accede a los datos del país seleccionado
-        const selectedCountryData = nacionality[selectedCountryCode as keyof typeof nacionality];
-          if (selectedCountryData) {
-            console.log(selectedCountryData.code);
-            console.log("hjaisfksafsaff")
-            console.log(selectedCountryData.code);
-            setCode(selectedCountryData.code); // Actualiza el estado code con el código del país seleccionado
-            setNumberCountry(selectedCountryData.dialCode); // Actualiza el estado numberCountry con el código de marcación del país seleccionado
-          } else {
-            // Manejo de error o mensaje en caso de no encontrar los datos del país
-            console.error(`No se encontraron datos para el país con código ${selectedCountryCode}`);
-          }
+            const selectedCountryData = nacionality[selectedCountryCode as keyof typeof nacionality];
+            if (selectedCountryData) {
+                setCode(selectedCountryData.code);
+                setNumberCountry(selectedCountryData.dialCode);
+            } else {
+                console.error(`No se encontraron datos para el país con código ${selectedCountryCode}`);
+            }
         } else {
-          // Manejo de caso donde no se selecciona ningún país
-          setNumberCountry(""); // Reinicia el estado numberCountry a una cadena vacía
+            setNumberCountry("");
         }
-      };
-    
-        
-  return (
+    };
 
-    
-    <>
+    const handleProfileImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (e.target && e.target.result) {
+                    setProfileImage(e.target.result as string);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
-    <div className="text-5xl text-center py-10">
-        <h1>Configuración</h1>
-    </div>
-    <div className="text-s text-center py-1">
-        <h1>Cuenta</h1>
-    </div>
-    <div className="text-s text-center py-1 text-gray-500">
-        <h1>Foto de perfil</h1>
-        <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-    </div>
-    <div className="text-s text-center py-1">
-        <h1>Nombre</h1>
-        <input type='password' name="contraseña" placeholder='Maria' className="bg-gray-100 mx-2 outline-none text-sm flex-1 w-64 mb-3 p-1"></input>
-    </div>
-    <div className="text-s text-center py-1">
-        <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-        <h1>Apellido</h1>
-        <input type='apellido' name="apellido" placeholder='Cuervo' className="bg-gray-100 mx-2 outline-none text-sm flex-1 w-64 mb-3 p-1"></input>
-    </div>
-    <div className="text-s text-center py-1">
-        <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-        <h1>Email</h1>
-        <input type='email' name="email" placeholder='mariadcv2003@gmail.com' className="bg-gray-100 mx-2 outline-none text-sm flex-1 w-64 mb-3 p-1"></input>
-    </div>
-    <div className="text-s text-center py-1">
-        <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
-        <h1>Contraseña</h1>
-        <input type='contra' name="contra" placeholder='1234' className="bg-gray-100 mx-2 outline-none text-sm flex-1 w-64 mb-3 p-1"></input>
-    </div>
-    <div className="text-s text-center py-1">
-        <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>   
-    </div>
-    <div className="flex flex-col items-center ">
-                        <div className="w-64  flex items-center  mb-2 ">
+    return (
+        <>
+            <div className="flex flex-col items-center justify-center w-full px-10 py-5">
+    <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl">
+        <div className="p-8">
+            <h1 className="text-3xl text-green-500 font-bold mb-4">Perfil</h1>
+            <div className="flex flex-col items-center">
+                <div className="relative w-32 h-32 overflow-hidden rounded-full mb-4">
+                    <img src={profileImage} alt="Imagen de Perfil" className="object-cover w-full h-full" />
+                </div>
+                <label htmlFor="fileInput" className="bg-green-500 text-white px-4 py-2 rounded-full cursor-pointer hover:bg-green-600">
+                    Cambiar foto de perfil
+                </label>
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleProfileImageChange}
+                />
+            </div>
+            <div className="text-center mt-4">
+                <h2 className="text-2xl">Configuración</h2>
+                <p className="text-sm text-gray-500">Actualiza tu información personal</p>
+            </div>
+            <form className="mt-6 space-y-4">
+                <div className="flex items-center">
+                    <span className="w-1/4 text-gray-600">Nombre:</span>
+                    <input type='text' name="nombre" placeholder='Maria' className="input-field"></input>
+                </div>
+                <div className="flex items-center">
+                    <span className="w-1/4 text-gray-600">Apellido:</span>
+                    <input type='text' name="apellido" placeholder='Cuervo' className="input-field"></input>
+                </div>
+                <div className="flex items-center">
+                    <span className="w-1/4 text-gray-600">Email:</span>
+                    <input type='email' name="email" placeholder='mar@gmail.com' className="input-field"></input>
+                </div>
+                <div className="flex items-center">
+                    <span className="w-1/4 text-gray-600">Contraseña:</span>
+                    <input type='password' name="contra" placeholder='xxxx' className="input-field"></input>
+                </div>
+                <div className="flex items-center">
+                    <span className="w-1/4 text-gray-600">País:</span>
+                    <div className="flex items-center space-x-2">
                         {country !== "" && (
-                               <div className='bg-gray-100 mr-2'>
-                                <FlagIcon code={code as FlagIconCode} size={32}/>
-                                </div>)}
-    
+                            <div className='bg-gray-100'>
+                                <FlagIcon code={code as FlagIconCode} size={24} />
+                            </div>
+                        )}
                         <select
                             value={country}
                             onChange={handleChange}
-                         
-                            className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            >
-                            <option  value="">Choose a country</option>
+                            className="input-field"
+                        >
+                            <option value="">Elige un país</option>
                             {Object.values(nacionality).map((countryObj) => (
                                 <option key={countryObj.code} value={countryObj.name}>
-                                {countryObj.name} ({countryObj.code})
+                                    {countryObj.name} ({countryObj.code})
                                 </option>
                             ))}
                         </select>
-                        </div>
-                        <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3">
-                        {country !== "" && (
-                                <div>
-                                    <p className='text-black'>{numberCountry}</p>
-                                </div>
-                                )}
-                            <input type="number" name="nombre" placeholder='Numero'value={phone} onChange={(ev) => setPhone(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1"></input>
-                        </div>
-                        <div className=" w-64 p-2 flex items-center n-2 mt-4 ">  
-                        <input type="file" className="file-input file-input-ghost w-full max-w-xs" />                
-                        </div>
-                         
-      </div>
-      <div className="text-s text-center py-1">
-        <a href="#" className="border-2 border-green-500 text-green-500 rounded-full px-6 py-2 inline-block font-senibold hover:bg-green-500 hover:text-white">Guardar cambios</a>
-        <a href="#" className="border-2 border-green-500 text-green-500 rounded-full px-6 py-2 inline-block font-senibold hover:bg-green-500 hover:text-white">Eliminar Cuenta</a>
-      </div>
-    </>
-  );
+                    </div>
+                </div>
+                <div className="flex items-center">
+                    <span className="w-1/4 text-gray-600">Teléfono:</span>
+                    <input type="tel" name="phone" placeholder='Número de teléfono' value={phone} onChange={(ev) => setPhone(ev.target.value)} className="input-field"></input>
+                </div>
+                <div className="flex justify-center mt-6">
+                    <button type="submit" className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 focus:outline-none">Guardar cambios</button>
+                </div>
+                <div className="flex justify-center mt-4">
+                    <button type="button" className="border border-green-500 text-green-500 px-6 py-3 rounded-full hover:bg-green-500 hover:text-white focus:outline-none">Eliminar cuenta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+        </>
+    );
 }
 
-export default Perfil
+export default Perfil;
