@@ -2,7 +2,7 @@
 
 
 import { useEffect, useState } from "react";
-import { loginURL } from "../../constants/url";
+import { ideaURL, loginURL } from "../../constants/url";
 import { useAuth } from "../../context/contex";
 import "./NavBar.css"
 export function NavBar() {
@@ -17,7 +17,7 @@ export function NavBar() {
       </a>
       <div className="hidden md:flex space-x-6">
       <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
-        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
+        <a href={ideaURL} className=" group-hover:text-gray-100 transition-colors duration-300">
           Quienes somos
         </a>
       </div>

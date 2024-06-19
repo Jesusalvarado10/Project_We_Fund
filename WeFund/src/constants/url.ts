@@ -24,3 +24,5 @@ export const nacionality = {
   "Uruguay": { "code": "UY", "dialCode": "+598", "name": "Uruguay" },
   "Venezuela": { "code": "VE", "dialCode": "+58", "name": "Venezuela" }
 };
+
+export const ideaURL = "/idea"
