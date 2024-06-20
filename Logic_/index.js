@@ -13,8 +13,9 @@ const base = "https://api-m.sandbox.paypal.com";
 const app = express();
 const urlBackendlocal="http://localhost:3000";
 
+const { pyDolarVenezuela } = require("consulta-dolar-venezuela");
 
-
+const pyDolar = new pyDolarVenezuela('bcv');
 
 app.disable('x-powered-by');
 app.use(cors());
@@ -22,6 +23,34 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/dolar", async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Sumar 1 porque los meses van de 0 a 11
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+    
+    // Crear la cadena de fecha y hora en formato legible
+    const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+    // Obtener el precio del dólar desde pyDolar
+    const dolar = await pyDolar.getMonitor("USD");
+
+    // Crear el objeto de respuesta con el precio y la fecha formateada
+    const data = {
+      price: dolar.price,
+      date: formattedDateTime
+    };
+
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching dolar value:", error);
+    res.status(500).send("Error fetching dolar value");
+  }
+});
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 app.post('/signUp', async (req, res) => {
@@ -74,7 +103,26 @@ app.post('/logIn', async (req, res) => {
 }
 });
   
+app.get("/fundaciones", async (req, res) => {
+  try {
+    const response = await fetch(`${urlBackend}/fundaciones`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    res.json(data);
+} catch (error) {
+    console.error('Error fetching data from server:', error);
+    res.status(500).send('Error fetching data from server');
+}
+});
 app.post('/pagoPaypall', async (req, res) => {
   const data = req.body;
 
@@ -113,7 +161,29 @@ setInterval(keepAlive, 150 * 1000);
 
 
 // Envía una solicitud inmediatamente al iniciar el script
+app.post('/setImga', async (req, res) => {
 
+  const data = req.body;
+  fetch(`${urlBackend}/setImga`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    return response.json();
+}
+)
+.then(data => {
+    console.log('Response from server:', data);
+    res.status(200).send(data);
+}
+)})
 
 app.get('/keepalive1', (req, res) => {
   console.log('Keepalive GET endpoint hit');
