@@ -6,6 +6,7 @@ import { LiaAddressCard } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 
 import { uploadFile } from "../../Firebase/auth";
+import Swal from "sweetalert2";
 
 function RegistroFundacion() {
 
@@ -18,6 +19,14 @@ function RegistroFundacion() {
 
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
        event.preventDefault();
+       if(!title || !type || !email || !description) {
+              Swal.fire({
+                title: "Missing fields",
+                text: "Please, fill all the fields and try again",
+                icon: "warning",
+              });
+              return;
+       }
         // if (password !== confirmPassword) {
         //     Swal.fire({
         //         title: "The password doesn't match",

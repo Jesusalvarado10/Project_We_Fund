@@ -48,7 +48,14 @@ function Registro() {
        event.preventDefault();
        console.log("hola que hace")
        console.log(country);
-      
+      if(!name || !last_name || !email || !password || !confirmPassword || !country || !phone){
+        Swal.fire({
+            title: "Empty fields",
+            text: "Please, fill all the fields and try again",
+            icon: "warning",
+        });
+        return;
+      }
         if (password !== confirmPassword) {
             Swal.fire({
                 title: "The password doesn't match",

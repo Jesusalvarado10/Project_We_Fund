@@ -6,6 +6,7 @@ import { User } from '../../Class/user';
 import { useAuth } from '../../context/contex';
 import { useNavigate } from 'react-router-dom';
 import { registerURL, registerURLFund } from '../../constants/url';
+import Swal from 'sweetalert2';
 interface LoginResponse {
     ok: boolean;
     userId: {
@@ -28,9 +29,25 @@ function Inicio() {
     const [password, setPassword] = useState('');
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
+        if(!email || !password) {
+          Swal.fire({
+            title: 'Error',
+            text: 'Please, fill all the fields and try again',
+            icon: 'error',
+          });
+          return;
+        }
         const iduser = await signInWithEmailAndPasswordAndFetchUserData(email, password);
+        if (!iduser) {
+          Swal.fire({
+            title: 'Error',
+            text: 'The email or password is incorrect',
+            icon: 'error',
+          });
+          return;
+        }
    
-        console.log(iduser)
+     
         const response = await fetch('http://localhost:8888/logIn', {
           method: 'POST',
           headers: {
