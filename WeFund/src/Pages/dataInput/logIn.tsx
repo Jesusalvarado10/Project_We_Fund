@@ -65,9 +65,15 @@ function Inicio() {
           if(iduser){ 
             getImageUrl(responseData.user, responseData.userId.img).then((url) => {
               if(url){
+                Swal.fire({
+                  title: "success",
+                  text: "Login success",
+                  icon: "success",
+                }).then(() => {
+
               const user= new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone,responseData.userId.country);
               login(user);
-              navigate('/');
+              navigate('/');})
           }}); 
   
           }
