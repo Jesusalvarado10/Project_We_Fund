@@ -10,6 +10,7 @@ function Impacto() {
         donaciones: 3000
     };
 
+    
     const fundaciones = [
         { nombre: 'Fundación A', descripcion: 'Fundación para la ayuda de niños.' },
         { nombre: 'Fundación B', descripcion: 'Fundación para la ayuda de animales.' },
