@@ -73,9 +73,13 @@ function RegistroFundacion() {
                 }
                 uploadFile(data.userId, file);
             });
-
+            Swal.fire({
+                title: "Success",
+                text: "The user has been created successfully",
+                icon: "success",
+            }).then(() => {
             navigate('/login');
-            console.log(response)
+            })
 
 
     }

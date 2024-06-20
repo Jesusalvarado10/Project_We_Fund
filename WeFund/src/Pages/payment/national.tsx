@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import ButttonPaypal from "../../components/paypal";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/contex";
+import { useNavigate } from "react-router-dom";
 
 export function National() {
 const {user}=useAuth();
+const navigate = useNavigate();
     const [monto, setMonto] = useState(0);
 const [phone, setPhone] = useState("");
 const [amount, setAmount] = useState(0);
@@ -70,7 +72,12 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
         body: JSON.stringify(data),
     })
     .then((response) => {response.json()
-        console.log("Success:", data);
+        Swal.fire({
+            title: "Pago exitoso",
+            text: "El pago se ha realizado con éxito",
+            icon: "success",
+        });
+        navigate("/home");
 
     })
 console.log("Success:", response);

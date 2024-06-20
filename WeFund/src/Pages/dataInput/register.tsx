@@ -112,9 +112,14 @@ function Registro() {
                           }),
                      });
                 });
-    
-                navigate('/login');
-                console.log(response)
+                Swal.fire({
+                    title: "success",
+                    text: "Registro exitoso",
+                    icon: "success",
+                }).then(() => {
+                    navigate('/login');
+                })
+         
     
     }
     }
