@@ -48,7 +48,7 @@ function Inicio() {
         }
    
      
-        const response = await fetch('https://project-we-fund-logic2-0.onrender.com//logIn', {
+        const response = await fetch('https://project-we-fund-logic2-0.onrender.com/logIn', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
