@@ -3,7 +3,7 @@
 import "./Home.css"   
 import op2 from '../../assets/op2.png';
 
-import HoverEffectModule from "../../components/cardFund";
+//import HoverEffectModule from "../../components/cardFund";
 
 
 
@@ -23,7 +23,7 @@ function Home() {
       </div>
       <div className="absolute bg-green-500  w-full h-3/4 flex items-center justify-center rounded-lg" >
         <div className='grid grid-cols-2 gap-4  '>
-       < HoverEffectModule></HoverEffectModule>
+       
         </div>
       </div>
       
