@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Home.css";
 import op2 from '../../assets/op2.png';
 import bambi from '../../assets/bambi.png';
@@ -40,7 +40,7 @@ function Home() {
   const [currentFundacion, setCurrentFundacion] = useState(0);
 
   const handlePrev = () => {
-    setCurrentFundacion((prev) => (prev === 0 ? fundaciones.length - 1 : prev - 1));
+    setCurrentFundacion((prev) => ((prev) === 0 ? fundaciones.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
