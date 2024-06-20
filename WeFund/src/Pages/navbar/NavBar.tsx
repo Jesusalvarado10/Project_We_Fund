@@ -1,74 +1,106 @@
 
 
 
+
+import { ideaURL, loginURL, homeURL, searchURL, profileURL } from "../../constants/url";
+
+import { useAuth } from "../../context/contex";
 import "./NavBar.css"
+import { useNavigate } from "react-router-dom";
+import PrivateRoute from "../../components/privatenavbar";
+import PrivateRouteUser from "../../components/privateguest";
 export function NavBar() {
+  const navigate = useNavigate();
+  const { user,logout } = useAuth()
+  // const {color}=useAuth()
+  // const [colorBg, setColorBg] = useState(`bg-${color}`)
  
 
   return (
-    <nav className="bg-green-500 text-white px-4 py-2 flex justify-between items-center md:px-8 md:py-4">
-      <a href="/" className="text-2xl font-bold md:text-3xl">
-        WeFund
-      </a>
-      <div className="hidden md:flex space-x-6">
-      <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
-        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
-          Quienes somos
-        </a>
+    <div className="navbar bg-green-500 z-10">
+    <div className="navbar-start">
+      <div className="dropdown">
+        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </div>
+        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52">
+        <PrivateRouteUser>
+      <li>
+      <a onClick={()=>{
+       navigate(loginURL)
+      
+      }}>Iniciar sesión</a>
+       </li>
+       </PrivateRouteUser>
+          <li>
+          <a onClick={()=>{
+       navigate(searchURL)
+      
+      }}>Donar</a>
+          </li>
+          <li><a onClick={()=>{
+       navigate(ideaURL)
+      
+      }}> ¿Quiénes somos? </a></li>
+      </ul>
       </div>
-      <div className="group p-1 rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
-        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
-          Donar
-        </a>
+      <a className="btn btn-ghost text-2xl text-white" onClick={()=>{
+       navigate(homeURL)
+      
+      }}>WeFund</a>
+    </div>
+    <div className="navbar-center hidden lg:flex">
+      <ul className="menu menu-horizontal px-1  z-[1] text-white ">
+      <PrivateRouteUser>
+      <li>
+      <a onClick={()=>{
+       navigate(loginURL)
+      
+      }}>Iniciar sesión</a>
+       </li>
+       </PrivateRouteUser>
+          <li>
+          <a onClick={()=>{
+       navigate(searchURL)
+      
+      }}>Donar</a>
+          </li>
+          <li><a onClick={()=>{
+       navigate(ideaURL)
+      
+      }}> ¿Quiénes somos? </a></li>
+      </ul>
+    </div>
+    <PrivateRoute>
+    <div className="navbar-end">
+    <div className="dropdown dropdown-end">
+    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+        <div className="w-10 rounded-full">
+          {user && <img alt="Tailwind CSS Navbar component" src={user.icon} />}
+        </div>
       </div>
-      <div className="group p-1  rounded-md hover:bg-gray-100 hover:bg-opacity-50 transition-colors duration-300">
-        <a href="#" className=" group-hover:text-gray-100 transition-colors duration-300">
-          Iniciar sesión
-        </a>
-      </div>
-       
-
-      </div>
-      <div className="relative">
-        <input
-          type="text"
-          className="bg-white text-green-500 px-4 py-2 rounded-full md:px-6 md:py-3 focus:outline-none"
-          placeholder="Buscar"
-        />
-        <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-green-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </button>
-      </div>
-      <button className="md:hidden">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
-    </nav>
+      <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li>
+          <a className="justify-between" onClick={()=>{
+          navigate(profileURL)
+         
+         }}>
+            Profile
+            <span className="badge">New</span>
+          </a>
+        </li>
+        <li><a>Settings</a></li>
+        <li><a onClick={()=>{
+          logout()
+          navigate(homeURL)
+         
+         }}
+        >Logout</a></li>
+      </ul>
+    </div>
+    </div>
+    </PrivateRoute>
+  </div>
   );
 }
 

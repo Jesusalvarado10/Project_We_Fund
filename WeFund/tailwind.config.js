@@ -6,7 +6,11 @@ export default {
   ],
   theme: {
 
-    extend: {},
+    extend: {
+      colors: {
+        customPurple: '#AF47D2',
+      },
+    },
   },
   plugins: [
     require('daisyui'),
