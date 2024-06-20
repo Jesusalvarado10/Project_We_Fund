@@ -69,6 +69,8 @@ async function signUp(data) {
       email: data.email,
       name: data.name,
       lastname: data.last_name,
+      phone: data.phone,
+      country: data.country,
     });
     }
     // Agrega los datos del usuario a la colección "users" en Firestore
@@ -97,6 +99,51 @@ async function emailVerification(email) {
     return null;
   }
 }
+async function getFundaciones() {
+  try {
+    const usersRef = database.collection('fundaciones');
+    const snapshot = await usersRef.get();
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+    const fund = [];
+    snapshot.forEach(doc => {
+      console.log(doc.id)
 
-module.exports = { signUp, logIn };
+      fund.push({ id: doc.id, ...doc.data() });
+    });
+    return fund;
+  } catch (error) {
+    console.error('Error getting documents: ', error);
+    return null;
+  }
+}
+async function getImageUrl(userId) {
+  try {
+    // Obtiene una lista de todos los archivos en la carpeta images/userId
+    const listRef = ref(storage, `images/${userId}/ac91c797b888cc696cde48c2ef8bcfe6.jpg`);
+    console.log(listRef)
+    // const listResult = await listAll(listRef);
+
+    // // Verifica que haya al menos un archivo
+    // if (listResult.items.length > 0) {
+    //   // Obtiene el primer archivo de la lista (asumiendo que solo hay uno)
+    //   const firstFile = listResult.items[0];
+
+    //   // Obtiene la URL de descarga del archivo
+    //   const imageUrl = await getDownloadURL(firstFile);
+
+    //   return imageUrl; // Devuelve la URL de descarga de la imagen
+    // } else {
+    //   console.error("No se encontraron archivos para el usuario:", userId);
+    //   return null; // Devuelve null si no se encontraron archivos
+    // }
+  } catch (error) {
+    console.error("Error al obtener la URL de la imagen:", error);
+    return null; // Devuelve null en caso de error
+  }
+}
+
+module.exports = { signUp, logIn, getFundaciones };
 

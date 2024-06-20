@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const { auth, database } = require('./firebase/firebase'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
-const { signUp,logIn } = require('./firebase/firebase_auth'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
+const { signUp,logIn, getFundaciones } = require('./firebase/firebase_auth'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -131,19 +131,51 @@ app.post('/signUp', async (req, res) => {
         res.status(500).send('Error al registrar usuario');
       }
     });
+app.post('/setImga', async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(data)
+        if(data.user==false){
+        const userRef = await database.collection('fundaciones').doc(data.id).update({img: data.img});}
+        else{
+            const userRef = await database.collection('users').doc(data.id).update({img: data.img});
+        }
+        res.status(200).json({ message: 'Data received successfully' })
+    } catch (error) {
+        console.error('Error al agregar documento: ', error);
+        res.status(500).send('Error al agregar documento');
+    }
+})
+    
+
 
 app.post("/login", async (req, res) => {
     try {
         console.log( req.body)
         const userId = await logIn(req.body.tokenID); // Espera a que signUp resuelva la promesa
         if (userId) {
-            res.status(200).send({ message: 'Usuario', "userId": userId });
+            res.status(200).send({ message: 'Usuario', "userId": userId , "user": req.body.tokenID.user.uid});
         } else {
             res.status(400).send({ message: 'Error al  usuario' });
         }
     } catch (error) {   
         console.error('Error al  usuario: ', error);
     }  });
+
+    app.get("/fundaciones", async (req, res) => {
+
+        try {
+            const fundaciones = await getFundaciones(); // Espera a que getFundaciones resuelva la promesa
+            if (fundaciones) {
+                res.status(200).send({fundaciones });
+            } else {
+                res.status(400).send({ message: 'Error al obtener fundaciones' });
+            }
+        } catch (error) {
+            console.error('Error al obtener fundaciones: ', error);
+        }
+    
+    })
 
 // Middleware para manejar solicitudes no encontradas (404)
 app.use((req, res, next) => {
