@@ -20,7 +20,7 @@ const [foundations, setFoundations] = useState<Foundation[]>(data1);
 const fetchFoundations = async () => {
    
     try {
-      const response = await fetch('https://project-we-fund-logic2-0.onrender.com//fundaciones');
+      const response = await fetch('https://project-we-fund-logic2-0.onrender.com/fundaciones');
       if (!response.ok) {
         throw new Error('Error fetching foundations');
       }
