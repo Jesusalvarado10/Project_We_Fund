@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 function Impacto() {
     // Aquí podrías implementar lógica para obtener datos de impacto y fundaciones

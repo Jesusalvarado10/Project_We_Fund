@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom'
-import { homeURL, loginURL, registerURLFund, nationalURL, registerURL, ideaURL, buscarURL } from './constants/url'
+import { homeURL, loginURL, registerURLFund, nationalURL, registerURL, ideaURL, buscarURL, searchURL, profileURL } from './constants/url'
 
 import { Layout } from './Pages/layout/layout'
 import Home from './Pages/home/Home'
@@ -15,6 +15,7 @@ import Buscar from './Pages/home/Buscar'
 import Perfil from './Pages/Menu/Perfil'
 import Impacto from './Pages/Menu/Impacto'
 import Error404 from './Pages/Menu/Error404'
+import Search from './Pages/home/search'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -31,6 +32,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={buscarURL} element={<Buscar></Buscar>}></Route>
               <Route path='/perfil' element={<Perfil></Perfil>}></Route>
               <Route path='/impacto' element={<Impacto></Impacto>}></Route>
+               <Route path={searchURL} element={<Search />} />
+              <Route path={profileURL} element={<Perfil />} />
               <Route path="*" element={<Error404 />} />
             </Route>
           </Routes>

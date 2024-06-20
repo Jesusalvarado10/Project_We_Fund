@@ -13,7 +13,6 @@ function ButttonPaypal() {
   };
 
   const [message, setMessage] = useState("");
-  console.log(message);
 
   return (
     <div className="App">
@@ -64,7 +63,7 @@ function ButttonPaypal() {
                   },
                 },
               );
-
+              console.log(message);
               const orderData = await response.json();
               // Three cases to handle:
               //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()

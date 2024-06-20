@@ -1,9 +1,10 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-import { ref, uploadBytes,  } from "@firebase/storage";
+import { getDownloadURL, ref, uploadBytes,  } from "@firebase/storage";
 
 
-import { auth, storage, database } from "./firebase";
+import { auth, storage } from "./firebase";
+
 
 export async function signInWithEmailAndPasswordAndFetchUserData(email: string, password: string) {
     try {
@@ -22,9 +23,38 @@ export async function signInWithEmailAndPasswordAndFetchUserData(email: string, 
       try {
         const storageRef = ref(storage, `images/${userId}/${file.name}`);
         await uploadBytes(storageRef, file);
+        const imageUrl = await getDownloadURL(storageRef);
+        console.log("")
+        console.log("")
+        console.log("")
+        console.log("")
+        console.log(imageUrl)
+        console.log(file.name)
+        console.log("")
+        console.log("")
+        console.log("")
+
+        return file.name;
+     
           console.log("File uploaded successfully.");
       } catch (error) {
           console.error("Error uploading file:", error);
       }
+
   }
     
+ export async function getImageUrl(userId: string, fileName: string): Promise<string | null> {
+    try {
+        // Obtén la referencia de la imagen en Firebase Storage
+        const storageRef = ref(storage, `images/${userId}/${fileName}`);
+
+        // Obtiene la URL de descarga de la imagen
+        const imageUrl = await getDownloadURL(storageRef);
+  console.log(imageUrl)
+
+        return imageUrl; // Devuelve la URL de descarga de la imagen
+    } catch (error) {
+        console.error("Error al obtener la URL de la imagen:", error);
+        return null; // Devuelve null en caso de error
+    }
+}

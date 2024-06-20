@@ -1,20 +1,21 @@
-import { FaGoogle, FaEnvelope, FaRegEnvelope } from 'react-icons/fa';
-import { MdLockOutline } from 'react-icons/md';
-import { LiaAddressCard } from "react-icons/lia";
+
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+
+
 import { FlagIcon, FlagIconCode } from 'react-flag-kit';
 import fotos from '../../assets/fotos.jpg';
 import './Perfil.css';
+import { useAuth } from '../../context/contex';
 
 function Perfil() {
+    const {user}= useAuth()
     const [country, setCountry] = useState<string>("");
     const [code, setCode] = useState<string>(""); 
     const [phone, setPhone] = useState<string>(""); 
     const [numberCountry, setNumberCountry] = useState<string>(""); 
     const [profileImage, setProfileImage] = useState<string>(fotos); 
-
+console.log(numberCountry)
+console.log(profileImage)
     const nacionality = {  
         "Argentina": { "code": "AR", "dialCode": "+54", "name": "Argentina" },
         "Bolivia": { "code": "BO", "dialCode": "+591", "name": "Bolivia" },
@@ -36,6 +37,17 @@ function Perfil() {
         "Uruguay": { "code": "UY", "dialCode": "+598", "name": "Uruguay" },
         "Venezuela": { "code": "VE", "dialCode": "+58", "name": "Venezuela" }
     };
+    useEffect(() => {
+        if (user) {
+            setCountry(user.country);
+            const x= nacionality[user.country as keyof typeof nacionality];
+            setCode(x.code);
+            setPhone(user.phone);
+            setProfileImage(user.icon);
+        }
+    }, [user]);
+
+        
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedCountryCode = event.target.value;
@@ -67,14 +79,18 @@ function Perfil() {
     };
 
     return (
-        <>
+        <>  
+     
             <div className="flex flex-col items-center justify-center w-full px-10 py-5">
     <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl">
         <div className="p-8">
             <h1 className="text-3xl text-green-500 font-bold mb-4">Perfil</h1>
             <div className="flex flex-col items-center">
-                <div className="relative w-32 h-32 overflow-hidden rounded-full mb-4">
-                    <img src={profileImage} alt="Imagen de Perfil" className="object-cover w-full h-full" />
+                <div className='relative right-12 top-4 z-10 rounded-lg '>
+                     <FlagIcon code={code as FlagIconCode} size={48}  />
+            </div> <div className="relative w-32 h-32 overflow-hidden rounded-full mb-4 z-0">
+                    
+                    <img src={user?.icon} alt="Imagen de Perfil" className="object-cover w-full h-full" />
                 </div>
                 <label htmlFor="fileInput" className="bg-green-500 text-white px-4 py-2 rounded-full cursor-pointer hover:bg-green-600">
                     Cambiar foto de perfil
@@ -94,15 +110,15 @@ function Perfil() {
             <form className="mt-6 space-y-4">
                 <div className="flex items-center">
                     <span className="w-1/4 text-gray-600">Nombre:</span>
-                    <input type='text' name="nombre" placeholder='Maria' className="input-field"></input>
+                    <input type='text' name="nombre" placeholder={user?.name} className="input-field"></input>
                 </div>
                 <div className="flex items-center">
                     <span className="w-1/4 text-gray-600">Apellido:</span>
-                    <input type='text' name="apellido" placeholder='Cuervo' className="input-field"></input>
+                    <input type='text' name="apellido" placeholder={user?.last_name} className="input-field"></input>
                 </div>
                 <div className="flex items-center">
                     <span className="w-1/4 text-gray-600">Email:</span>
-                    <input type='email' name="email" placeholder='mar@gmail.com' className="input-field"></input>
+                    <input type='email' name="email" placeholder={user?.email} className="input-field"></input>
                 </div>
                 <div className="flex items-center">
                     <span className="w-1/4 text-gray-600">Contraseña:</span>

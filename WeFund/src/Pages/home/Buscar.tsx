@@ -5,7 +5,7 @@ function Buscar() {
 
   useEffect(() => {
 
-    fetch('/api/foundations')
+    fetch('http://localhost:8888/fundaciones')
       .then((response) => response.json())
       .then((data) => setFoundations(data));
   }, []);

@@ -1,7 +1,7 @@
-import {FaGoogle, FaEnvelope, FaRegEnvelope} from 'react-icons/fa'
+import {FaGoogle, FaRegEnvelope} from 'react-icons/fa'
 import {MdLockOutline} from 'react-icons/md'
-import { signInWithEmailAndPasswordAndFetchUserData } from '../../Firebase/auth';
-import { useEffect, useState } from 'react';
+import { getImageUrl, signInWithEmailAndPasswordAndFetchUserData } from '../../Firebase/auth';
+import {  useState } from 'react';
 import { User } from '../../Class/user';
 import { useAuth } from '../../context/contex';
 import { useNavigate } from 'react-router-dom';
@@ -11,38 +11,50 @@ interface LoginResponse {
     userId: {
       name: string;
       email: string;
-      last_name: string;
+      lastname: string;
+      img: string;
+      country: string;
+      phone: string;
     };
+    user: string
   }
 function Inicio() {
 
   const [validate, setValidate] = useState(false);
-
+  // const [iduser, setIduser] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
-        
+        const iduser = await signInWithEmailAndPasswordAndFetchUserData(email, password);
+   
+        console.log(iduser)
         const response = await fetch('http://localhost:8888/logIn', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: email,
-            password: password,
+            tokenID: iduser,
+            
           }),
         });
         
         if (response.ok) {
           const responseData: LoginResponse = await response.json();
-          const user = new User(
-            responseData.userId.name,
-            responseData.userId.email,
-            responseData.userId.last_name
-          );
+          console.log(responseData)
+          if(iduser){ 
+            getImageUrl(responseData.user, responseData.userId.img).then((url) => {
+              if(url){
+              const user= new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone,responseData.userId.country);
+              login(user);
+              navigate('/');
+          }}); 
+  
+          }
+          const user= new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, "",responseData.userId.phone,responseData.userId.country);
           login(user);
           navigate('/');
 

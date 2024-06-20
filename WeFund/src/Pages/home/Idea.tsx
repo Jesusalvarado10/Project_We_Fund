@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 function Idea() {
   const [message, setMessage] = useState('');
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
     setMessage(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     window.location.href = `mailto:jesus.alvarado@correo.unimet.edu.ve?subject=Consulta&body=${encodeURIComponent(message)}`;
   };
@@ -60,7 +60,7 @@ function Idea() {
             placeholder="Escribe tu duda aquí..."
             value={message}
             onChange={handleInputChange}
-            rows="6"  // Ajuste de la altura del textarea
+            rows={6}  // Ajuste de la altura del textarea
           />
           <button type="submit" className="px-4 py-2 bg-green-500 text-white font-bold rounded">
             Enviar

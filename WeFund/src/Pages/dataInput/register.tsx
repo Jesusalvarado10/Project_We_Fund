@@ -1,7 +1,7 @@
-import {FaGoogle, FaEnvelope, FaRegEnvelope} from 'react-icons/fa'
+import {FaGoogle,  FaRegEnvelope} from 'react-icons/fa'
 import {MdLockOutline} from 'react-icons/md'
 import {LiaAddressCard } from "react-icons/lia";
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import { nacionality } from '../../constants/url';
@@ -46,6 +46,9 @@ function Registro() {
       };
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
        event.preventDefault();
+       console.log("hola que hace")
+       console.log(country);
+      
         if (password !== confirmPassword) {
             Swal.fire({
                 title: "The password doesn't match",
@@ -62,6 +65,10 @@ function Registro() {
             });
             return;
         }
+        if(!file){
+            console.log("asdadsad")
+            return 
+        }
         const response = await fetch('http://localhost:8888/signUp', {
             method: 'POST',
             headers: {
@@ -72,17 +79,31 @@ function Registro() {
                 last_name: last_name,
                 email: email,
                 password: password,
+                country: country,
+                phone: phone,
                 user: true,
       
             }),
             });
             if (response.ok) {
-                response.json().then((data) => {
+                response.json().then(async (data) => {
                     console.log(data);
                     if (!file) {
                         return;
                     }
-                    uploadFile(data.userId, file);
+                    console.log("entro")
+                   const img= await uploadFile(data.userId, file);
+                   await fetch('http://localhost:8888/setImga', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                            id: data.userId,
+                            img: img,
+                            user: true,
+                          }),
+                     });
                 });
     
                 navigate('/login');
@@ -158,7 +179,7 @@ function Registro() {
                             value={country}
                             onChange={handleChange}
                          
-                            className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                             <option  value="">Choose a country</option>
                             {Object.values(nacionality).map((countryObj) => (
@@ -174,10 +195,10 @@ function Registro() {
                                     <p className='text-black'>{numberCountry}</p>
                                 </div>
                                 )}
-                        <input type="file"  onChange={handleChange1}className="file-input w-full max-w-xs bg-customPurple" accept="image/*" />
+                            <input type="phone" name="phone" placeholder='Telefono' value={phone} onChange={(ev) => setPhone(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1"></input>
                     </div>
                         <div className=" w-64 p-2 flex items-center n-2 mt-4 ">  
-                        <input type="file" className="file-input w-full max-w-xs" />                
+                        <input onChange={handleChange1} type="file" className="file-input w-full max-w-xs" accept="image/*" />                
                         </div>
                          
              </div>
