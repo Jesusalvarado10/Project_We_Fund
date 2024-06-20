@@ -13,6 +13,7 @@ import RegistroFundacion from './Pages/dataInput/registerFundacion'
 import Idea from './Pages/home/Idea'
 import Buscar from './Pages/home/Buscar'
 import Perfil from './Pages/Menu/Perfil'
+import Impacto from './Pages/Menu/Impacto'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -28,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={ideaURL} element={<Idea></Idea>}></Route>
               <Route path={buscarURL} element={<Buscar></Buscar>}></Route>
               <Route path='/perfil' element={<Perfil></Perfil>}></Route>
+              <Route path='/impacto' element={<Impacto></Impacto>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
