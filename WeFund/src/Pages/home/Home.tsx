@@ -10,39 +10,27 @@ import { faHeartPulse } from '@fortawesome/free-solid-svg-icons/faHeartPulse';
 import { faBurger } from '@fortawesome/free-solid-svg-icons/faBurger';
 import { faShirt } from '@fortawesome/free-solid-svg-icons/faShirt';
 import { faFutbol } from '@fortawesome/free-solid-svg-icons/faFutbol';
-
-const fundaciones = [
-  {
-    img: bambi,
-    nombre: "Hogar Bambi Venezuela",
-    descripcion: "En Hogar Bambi brindamos atención integral a niños y niñas de 0 a 18 años, en nuestras cinco casas ubicadas en San Bernardino. Trabajamos por la infancia en estado de vulnerabilidad, proporcionando un entorno seguro, respetuoso y amoroso, mientras restituimos sus derechos, trabajando con las familias y la comunidad.",
-    recaudado: "$13.457,09 recaudados",
-    color: "#4CAF50"
-  },
-  {
-    img: fundana,
-    nombre: "Fundana",
-    descripcion: "Brindamos protección y acompañamiento a niños, niñas, mujeres y familias vulnerables. Nos aseguramos que cada niño sea reinsertado en un medio familiar seguro. Realizamos trabajo preventivo junto a las comunidades, atendiendo problemáticas familiares, alimentarias, de higiene y de violencia intrafamiliar...",
-    recaudado: "$8.547,71 recaudados",
-    color: "orange"
-  },
-  {
-    img: aplav,
-    nombre: "Amor Por Los Animales Venezuela (APLAV)",
-    descripcion: "La idea de consolidar nuestra fundación surge de la necesidad de generar una serie de actividades en pro del bienestar animal con la finalidad de contrarrestar el maltrato hacia los mismos en todas sus formas, especialmente el abandono.",
-    recaudado: "$5.201,34 recaudados",
-    color: "#00CED1"
-  },
-
-];
+import { Map, Marker } from "pigeon-maps"
+import PigeonMap from "../map/map";
 
 function Home() {
+  const [location, setLocation] = useState<string>("");
   const [currentFundacion, setCurrentFundacion] = useState(0);
-
+  const centerVenezuela: [number, number] = [6.4238, -66.5897];
+  const defaultZoom: number = 80;
+  const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
   const handlePrev = () => {
     setCurrentFundacion((prev) => ((prev) === 0 ? fundaciones.length - 1 : prev - 1));
   };
-
+const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setLocation(event.target.value);
+  const coordinates = getCoordinatesFromGoogleMapsLink(event.target.value);
+  if (coordinates) {
+      setCoordinates([coordinates.latitude, coordinates.longitude]);
+  } else {
+      setCoordinates(null);
+  }
+};
   const handleNext = () => {
     setCurrentFundacion((prev) => (prev === fundaciones.length - 1 ? 0 : prev + 1));
   };
@@ -111,9 +99,66 @@ function Home() {
             </div>
           </div>
         </div>
+        <div>
+   
+        </div>
+       
+      </div>
+     Coloque el link de googlemaps <input type="text" value={location} onChange={handleChange}  />
+      <div>
+      {coordinates && (
+          <div className="mt-4">
+            <PigeonMap height={400} defaultCenter={coordinates} defaultZoom={defaultZoom} />
+            
+          </div>
+        )}
+        
+          
+   
+   
       </div>
     </>
   );
 }
 
 export default Home;
+
+
+const fundaciones = [
+  {
+    img: bambi,
+    nombre: "Hogar Bambi Venezuela",
+    descripcion: "En Hogar Bambi brindamos atención integral a niños y niñas de 0 a 18 años, en nuestras cinco casas ubicadas en San Bernardino. Trabajamos por la infancia en estado de vulnerabilidad, proporcionando un entorno seguro, respetuoso y amoroso, mientras restituimos sus derechos, trabajando con las familias y la comunidad.",
+    recaudado: "$13.457,09 recaudados",
+    color: "#4CAF50"
+  },
+  {
+    img: fundana,
+    nombre: "Fundana",
+    descripcion: "Brindamos protección y acompañamiento a niños, niñas, mujeres y familias vulnerables. Nos aseguramos que cada niño sea reinsertado en un medio familiar seguro. Realizamos trabajo preventivo junto a las comunidades, atendiendo problemáticas familiares, alimentarias, de higiene y de violencia intrafamiliar...",
+    recaudado: "$8.547,71 recaudados",
+    color: "orange"
+  },
+  {
+    img: aplav,
+    nombre: "Amor Por Los Animales Venezuela (APLAV)",
+    descripcion: "La idea de consolidar nuestra fundación surge de la necesidad de generar una serie de actividades en pro del bienestar animal con la finalidad de contrarrestar el maltrato hacia los mismos en todas sus formas, especialmente el abandono.",
+    recaudado: "$5.201,34 recaudados",
+    color: "#00CED1"
+  },
+
+]; // Coordenadas de Londres
+
+
+function getCoordinatesFromGoogleMapsLink(googleMapsLink : string) {
+  // Extraer las coordenadas de la URL usando expresiones regulares
+  const match = googleMapsLink.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+
+  if (match && match.length >= 3) {
+      const latitude = parseFloat(match[1]);
+      const longitude = parseFloat(match[2]);
+      return { latitude, longitude };
+  }
+
+  return null; // Devolver null si no se encontraron coordenadas válidas
+}
