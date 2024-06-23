@@ -7,15 +7,20 @@ import { useNavigate } from "react-router-dom";
 
 import { uploadFile } from "../../Firebase/auth";
 import Swal from "sweetalert2";
+import { get } from "firebase/database";
+import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
 
 function RegistroFundacion() {
 
     const navigate = useNavigate();
+    const [shortDescription, setShortDescription] = useState<string>("");
     const [type, setType] = useState<string>("");
     const [title , setTitle] = useState<string>("");
     const [email, setEmail] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState<File | null>(null);
+    const [location, setLocation] = useState<string>("");
+    const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
 
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
        event.preventDefault();
@@ -43,11 +48,23 @@ function RegistroFundacion() {
         //     });
         //     return;
         // }
+        setCoordinates(getCoordinatesFromGoogleMapsLink(location) as [number, number] | null);
+        if (!coordinates) {
+            Swal.fire({
+                title: "Invalid location",
+                text: "Please, check the location and try again",
+                icon: "warning",
+            });
+            return;
+        }
+
         const dic = {
             title: title,
             type: type,
             email: email,
             description: description,
+            shortDescription: shortDescription,
+            location: coordinates,
             file: file,
         }
         console.log(dic)
@@ -61,6 +78,8 @@ function RegistroFundacion() {
                 type: type,
                 email: email,
                 description: description,
+                shortDescription: shortDescription,
+                location: coordinates,
                 user: false
       
             }),
@@ -141,9 +160,22 @@ function RegistroFundacion() {
                             value={description}
                             onChange={(ev) => setDescription(ev.target.value)}
                             className="bg-gray-100  w-full px-3 py-2 placeholder-gray-300 text-gray-90 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            placeholder="Enter your message..."
+                            placeholder="Coloque la descripcion de la fundacion..."
                             rows={4} // Define el número inicial de filas del textarea
                         />      
+                        </div>
+                        <div className=" w-64 p-2 flex items-center n-2 mb-3">
+                        <textarea
+                            value={shortDescription}
+                            onChange={(ev) => setShortDescription(ev.target.value)}
+                            className="bg-gray-100  w-full px-3 py-2 placeholder-gray-300 text-gray-90 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            placeholder="Coloque la descripcion corta de la fundacion..."
+                            rows={4} // Define el número inicial de filas del textarea
+                        />      
+                        </div>
+                        <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3">
+                            <LiaAddressCard/>
+                            <input type="nombre" name="nombre" placeholder='Coloque la ubicación 'value={location} onChange={(ev) => setLocation(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1"></input>
                         </div>
                         <div className=" w-64 p-2 flex-col items-center n-2 mb-3 ">
                         <label className="form-control w-full max-w-xs">

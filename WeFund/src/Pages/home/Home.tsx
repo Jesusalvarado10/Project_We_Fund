@@ -12,6 +12,7 @@ import { faShirt } from '@fortawesome/free-solid-svg-icons/faShirt';
 import { faFutbol } from '@fortawesome/free-solid-svg-icons/faFutbol';
 import { Map, Marker } from "pigeon-maps"
 import PigeonMap from "../map/map";
+import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
 
 function Home() {
   const [location, setLocation] = useState<string>("");
@@ -150,15 +151,3 @@ const fundaciones = [
 ]; // Coordenadas de Londres
 
 
-function getCoordinatesFromGoogleMapsLink(googleMapsLink : string) {
-  // Extraer las coordenadas de la URL usando expresiones regulares
-  const match = googleMapsLink.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-
-  if (match && match.length >= 3) {
-      const latitude = parseFloat(match[1]);
-      const longitude = parseFloat(match[2]);
-      return { latitude, longitude };
-  }
-
-  return null; // Devolver null si no se encontraron coordenadas válidas
-}
