@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Home.css";
 import op2 from '../../assets/op2.png';
 import bambi from '../../assets/bambi.png';
@@ -15,6 +15,14 @@ import PigeonMap from "../map/map";
 import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
 
 function Home() {
+
+  interface Foundation {
+    id: string;
+    tittle: string;
+    description: string;
+    banner: string;
+    type: string;
+  }
   const [location, setLocation] = useState<string>("");
   const [currentFundacion, setCurrentFundacion] = useState(0);
   const centerVenezuela: [number, number] = [6.4238, -66.5897];
@@ -23,7 +31,9 @@ function Home() {
   const handlePrev = () => {
     setCurrentFundacion((prev) => ((prev) === 0 ? fundaciones.length - 1 : prev - 1));
   };
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const [data1, setData1] = useState<Foundation[]>([]);
+  const [foundations, setFoundations] = useState<Foundation[]>([]);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   setLocation(event.target.value);
   const coordinates = getCoordinatesFromGoogleMapsLink(event.target.value);
   if (coordinates) {
@@ -34,6 +44,24 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 };
   const handleNext = () => {
     setCurrentFundacion((prev) => (prev === fundaciones.length - 1 ? 0 : prev + 1));
+  };
+
+  useEffect(() => {
+    fetchFoundations();
+  }, []);
+
+  const fetchFoundations = async () => {
+    try {
+      const response = await fetch('https://project-we-fund-logic2-0.onrender.com/fundaciones');
+      if (!response.ok) {
+        throw new Error('Error fetching foundations');
+      }
+      const data = await response.json();
+      setData1(data.fundaciones);
+      setFoundations(data.fundaciones);
+    } catch (error) {
+      console.error('Error fetching foundations:', error);
+    }
   };
 
   return (
@@ -78,25 +106,19 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-white-200">
       <div className="flex justify-center w-full max-w-4xl mb-4">
-      <button onClick={handlePrev} className="bg-green-500 text-white px-10 py-2 rounded-full shadow-md mr-80" style={{ fontFamily: 'Kanit, sans-serif' }}>Anterior</button>
-      <button onClick={handleNext} className="bg-green-500 text-white px-10 py-2 rounded-full shadow-md ml-80" style={{ fontFamily: 'Kanit, sans-serif' }}>Siguiente</button>
     </div>
-        <div className="relative bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl" style={{ backgroundColor: fundaciones[currentFundacion].color }}>
+        <div className="relative  shadow-lg rounded-lg p-6 w-full max-w-4xl bg-green-500" >
           <div className="w-full h-3/4 flex items-center justify-center rounded-lg p-6">
             <div className="grid grid-cols-2 gap-4">
-              <div className="mt-10">
-                <img src={fundaciones[currentFundacion].img} alt="background" className="w-72 h-72 ml-10" />
+            {foundations.map(foundation => (
+            <div key={foundation.id} className="bg-white rounded-lg shadow-lg">
+              <img src={foundation.banner} alt="" className="w-full h-32 object-cover object-center" />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-black">{foundation.tittle}</h3>
+                <p>{foundation.type}</p>
               </div>
-              <div className="mr-10 flex flex-col justify-between">
-                <div>
-                  <h4 className="text-4xl text-white">{fundaciones[currentFundacion].nombre}</h4>
-                  <p className="text-white">{fundaciones[currentFundacion].descripcion}</p>
-                </div>
-                <div className="flex justify-between mt-4">
-                  <button className="button mr-4">{fundaciones[currentFundacion].recaudado}</button>
-                  <button className="button">Donar</button>
-                </div>
-              </div>
+            </div>
+          ))}
             </div>
           </div>
         </div>
@@ -124,30 +146,5 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 export default Home;
 
-
-const fundaciones = [
-  {
-    img: bambi,
-    nombre: "Hogar Bambi Venezuela",
-    descripcion: "En Hogar Bambi brindamos atención integral a niños y niñas de 0 a 18 años, en nuestras cinco casas ubicadas en San Bernardino. Trabajamos por la infancia en estado de vulnerabilidad, proporcionando un entorno seguro, respetuoso y amoroso, mientras restituimos sus derechos, trabajando con las familias y la comunidad.",
-    recaudado: "$13.457,09 recaudados",
-    color: "#4CAF50"
-  },
-  {
-    img: fundana,
-    nombre: "Fundana",
-    descripcion: "Brindamos protección y acompañamiento a niños, niñas, mujeres y familias vulnerables. Nos aseguramos que cada niño sea reinsertado en un medio familiar seguro. Realizamos trabajo preventivo junto a las comunidades, atendiendo problemáticas familiares, alimentarias, de higiene y de violencia intrafamiliar...",
-    recaudado: "$8.547,71 recaudados",
-    color: "orange"
-  },
-  {
-    img: aplav,
-    nombre: "Amor Por Los Animales Venezuela (APLAV)",
-    descripcion: "La idea de consolidar nuestra fundación surge de la necesidad de generar una serie de actividades en pro del bienestar animal con la finalidad de contrarrestar el maltrato hacia los mismos en todas sus formas, especialmente el abandono.",
-    recaudado: "$5.201,34 recaudados",
-    color: "#00CED1"
-  },
-
-]; // Coordenadas de Londres
 
 
