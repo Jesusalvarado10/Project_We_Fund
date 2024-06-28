@@ -13,6 +13,7 @@ import { faFutbol } from '@fortawesome/free-solid-svg-icons/faFutbol';
 import { Map, Marker } from "pigeon-maps"
 import PigeonMap from "../map/map";
 import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
+import { saludURL } from "../../constants/url";
 
 function Home() {
   const [location, setLocation] = useState<string>("");
@@ -47,7 +48,7 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             />
             <span className="group-hover:text-blue-500 transition-colors duration-300">Educación</span>
           </a>
-          <a href="#" className="flex flex-col items-center text-gray-700 group">
+          <a href={saludURL} className="flex flex-col items-center text-gray-700 group">
             <FontAwesomeIcon icon={faHeartPulse} 
               className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
             />

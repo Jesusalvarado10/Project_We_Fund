@@ -27,3 +27,4 @@ export const nacionality = {
 export const ideaURL = "/idea"
 export const searchURL = "/search"
 export const profileURL = "/perfil"
+export const saludURL = "/salud"
