@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom'
-import { homeURL, loginURL, registerURLFund, nationalURL, registerURL, ideaURL, searchURL, profileURL } from './constants/url'
+import { homeURL, loginURL, registerURLFund, nationalURL, registerURL, ideaURL, searchURL, profileURL, typeURL, fundationsURL } from './constants/url'
 
 import { Layout } from './Pages/layout/layout'
 import Home from './Pages/home/Home'
@@ -15,6 +15,8 @@ import Perfil from './Pages/Menu/Perfil'
 import Impacto from './Pages/Menu/Impacto'
 import Error404 from './Pages/Menu/Error404'
 import Search from './Pages/home/search'
+import { Type } from './Pages/Pagetype/type'
+import { Foundation } from './Pages/viewFoundation/foundation'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -32,7 +34,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path='/impacto' element={<Impacto></Impacto>}></Route>
                <Route path={searchURL} element={<Search />} />
               <Route path={profileURL} element={<Perfil />} />
+              <Route path={typeURL} element={<Type/>} />
+              <Route path={fundationsURL} element={<Foundation/>} />
               <Route path="*" element={<Error404 />} />
+              
             </Route>
           </Routes>
         </BrowserRouter>
