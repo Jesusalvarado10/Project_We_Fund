@@ -17,12 +17,38 @@ const { pyDolarVenezuela } = require("consulta-dolar-venezuela");
 
 const pyDolar = new pyDolarVenezuela('bcv');
 
+
 app.disable('x-powered-by');
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.post("/getTypes", async (req, res) => {
+  const data = req.body;
+  console.log(data.id)
+
+  try {
+    // Envía el objeto `data` al otro servidor en localhost
+    const response = await fetch(`${urlBackend}/getTypes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Obtén la respuesta del otro servidor
+    const responseData = await response.json();
+
+    // Reenvía la respuesta del otro servidor al cliente
+    res.status(response.status).json(responseData);
+  } catch (error) {
+    console.error('Error sending data to another server:', error);
+    res.status(500).send('Error sending data to another server');
+  }
+}
+)
 app.get("/dolar", async (req, res) => {
   try {
     const currentDate = new Date();
@@ -184,7 +210,30 @@ app.post('/setImga', async (req, res) => {
     res.status(200).send(data);
 }
 )})
+app.post("/getFundationID", async (req, res) => {
+  const data = req.body;
+  console.log(data.id)
 
+  try {
+    // Envía el objeto `data` al otro servidor en localhost
+    const response = await fetch(`${urlBackend}/getFundationID`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Obtén la respuesta del otro servidor
+    const responseData = await response.json();
+
+    // Reenvía la respuesta del otro servidor al cliente
+    res.status(response.status).json(responseData);
+  } catch (error) {
+    console.error('Error sending data to another server:', error);
+    res.status(500).send('Error sending data to another server');
+  }
+})
 app.get('/keepalive1', (req, res) => {
   console.log('Keepalive GET endpoint hit');
   res.sendStatus(200);
