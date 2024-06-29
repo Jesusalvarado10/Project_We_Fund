@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const { auth, database } = require('./firebase/firebase'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
-const { signUp,logIn, getFundaciones } = require('./firebase/firebase_auth'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
+const { signUp,logIn, getFundaciones,getFoundationType,getFoundation } = require('./firebase/firebase_auth'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -37,6 +37,20 @@ app.post('/pagoPaypallAgregar', async (req, res) => {
     
 
 })
+app.post ("/getFundationID", async (req, res) => {
+    try {
+        console.log( req.body)
+        const fundacion = await getFoundation(req.body.id); // Espera a que signUp resuelva la promesa
+        if (fundacion) {
+            res.status(200).send({fundacion });
+        }
+        else {
+            res.status(400).send({ message: 'Error al obtener fundaciones' });
+        }
+    } catch (error) {
+        console.error('Error al obtener fundaciones: ', error);
+    }
+})  
 // Ruta para el favicon.ico
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
@@ -148,7 +162,20 @@ app.post('/setImga', async (req, res) => {
 })
     
 
-
+app.post('/getTypes', async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(data)
+        const types = await getFoundationType(data.id); // Espera a que signUp resuelva la promesa
+        if (types) {
+            res.status(200).send({ "types": types });
+        } else {
+            res.status(400).send({ message: 'Error al  usuario' });
+        }
+    } catch (error) {
+        console.error('Error al  usuario: ', error);
+    }
+}   );
 app.post("/login", async (req, res) => {
     try {
         console.log( req.body)

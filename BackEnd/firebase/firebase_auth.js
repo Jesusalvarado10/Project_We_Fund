@@ -61,6 +61,9 @@ async function signUp(data) {
       type: data.type,
       email: data.email,
       description: data.description,
+      shortDescription: data.shortDescription,
+      location: data.coordinates,
+
     });
    }
     else{
@@ -144,6 +147,43 @@ async function getImageUrl(userId) {
     return null; // Devuelve null en caso de error
   }
 }
+async function getFoundationType(type){
+  try {
+    const usersRef = database.collection('fundaciones');
+    const snapshot = await usersRef.where('type', '==', type).get();
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+    const fund = [];
+    snapshot.forEach(doc => {
+      console.log(doc.id)
 
-module.exports = { signUp, logIn, getFundaciones };
+      fund.push({ id: doc.id, ...doc.data() });
+    });
+    return fund;
+  } catch (error) {
+    console.error('Error getting documents: ', error);
+    return null;
+  }
+
+}
+
+async function getFoundation(id){
+  try {
+    const usersRef = database.collection('fundaciones').doc(id);
+    const snapshot = await usersRef.get();
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+    console.log(snapshot.data())
+    const fund = snapshot.data();
+    return fund;
+  } catch (error) {
+    console.error('Error getting documents: ', error);
+    return null;
+  }
+}
+module.exports = { signUp, getFoundationType,logIn, getFundaciones ,getFoundation};
 
