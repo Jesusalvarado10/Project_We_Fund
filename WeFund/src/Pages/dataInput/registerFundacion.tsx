@@ -57,7 +57,7 @@ function RegistroFundacion() {
             });
             return;
         }
-
+        console.log(coordinates)
         const dic = {
             title: title,
             type: type,

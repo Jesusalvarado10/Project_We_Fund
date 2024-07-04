@@ -64,7 +64,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     }
 
     try {
-        const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoMovil ", {
+        const response = await fetch(" http://localhost:8888/pagoMovil ", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             text: "El pago se ha realizado con éxito",
             icon: "success",
         });
-        navigate("/home");
+        navigate("/");
 
     })
 console.log("Success:", response);
@@ -93,7 +93,7 @@ console.log("Success:", response);
     
    
         <div className="flex flex-col justify-center items-center h-screen bg-gray-200 w-full">
-            <div className="bg-green-500 w-full text-center h-64 flex flex-col  items-center z-0">
+            <div className="bg-green-500 w-full text-center h-64 flex flex-col  items-center mt-[-20px] z-0">
             <h1 className="mt-9 text-1xl  text-white font-bold mb-1">
                 Dolar
             </h1>
@@ -105,7 +105,7 @@ console.log("Success:", response);
             </p>
       
             </div>
-            <div className=" text-center  h-3/4 bg-white z-10 relative mt-[-50px] ">
+            <div className=" text-center  h-full mb-2 shadow-2xl bg-white z-10 relative mt-[-60px] m ">
          <h1 className="text-3xl p-7 font-bold " >Formas de pago</h1>
          <input className="border-2 border-gray-300 p-1 m-1"
                 type="number"

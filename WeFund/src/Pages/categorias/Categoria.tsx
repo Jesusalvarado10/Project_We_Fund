@@ -1,9 +1,14 @@
-import React from "react";
+
 import "./Visual.css";
 
-function Categoria() {
-  const categorias = {
-    Alimento: {
+function Categoria({ categoriaSeleccionada }: { categoriaSeleccionada: string }) {
+  const categorias: { [key: string]: {
+    titulo: string;
+    descripcion: string;
+    imagenUrl: string;
+    onStartCampaign: () => void;
+  } } = {
+    Alimentos: {
       titulo: "Alimentacion en WeFund",
       descripcion:
         "El acceso a una alimentación adecuada es esencial para el bienestar y el desarrollo de las personas. Las fundaciones dedicadas a este sector juegan un papel vital en la lucha contra el hambre y la malnutrición, trabajando incansablemente para asegurar que todos tengan acceso a alimentos nutritivos.",
@@ -23,7 +28,7 @@ function Categoria() {
         alert("Campaña iniciada para Deporte");
       },
     },
-    Educacion: {
+    Educación: {
       titulo: "Educación en WeFund",
       descripcion:
         "En el corazón de toda sociedad próspera se encuentra el pilar fundamental de la educación. Las fundaciones dedicadas a este sector juegan un papel crucial en la transformación de comunidades, proporcionando acceso a oportunidades educativas y recursos que pueden cambiar vidas.",
@@ -55,7 +60,7 @@ function Categoria() {
     },
   };
 
-  const categoriaSeleccionada = "Vestimenta"; // Cambia esta línea para cambiar la categoría mostrada
+   // Cambia esta línea para cambiar la categoría mostrada
 
   const handleStartCampaign = () => {
     categorias[categoriaSeleccionada].onStartCampaign();

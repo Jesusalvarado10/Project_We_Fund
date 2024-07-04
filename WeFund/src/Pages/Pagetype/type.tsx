@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Categoria from "../categorias/Categoria";
 interface Foundation {
     id: string;
     tittle: string;
@@ -30,14 +31,11 @@ export const Type = () => {
         fetchData();
     }, [id]);
 
-    const Categoria: React.FC<{ categoriaSeleccionada: string }> = ({ categoriaSeleccionada }) => {
-      return (<>
-        Categoria categoriaSeleccionada = {categoriaSeleccionada}
-      </>);
-    }
+ 
 
     return (
         <div>
+          <Categoria categoriaSeleccionada={id as string} />
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {fundaciones.map(foundation => (
             <div key={foundation.id} className="bg-white rounded-lg shadow-lg">

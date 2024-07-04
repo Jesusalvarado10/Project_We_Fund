@@ -69,11 +69,11 @@ const Search = () => {
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-black">{foundation.tittle}</h3>
                 <p>{foundation.type}</p>
-                <div className="flex  justify-between">
+                <div className="flex  gap-4">
                 <button
                   className="mt-4 bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded"
                   onClick={() => {
-                  
+                  navigate(nationalURL)
                   }}
                 >
                   Donar
