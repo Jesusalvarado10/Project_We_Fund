@@ -62,7 +62,7 @@ async function signUp(data) {
       email: data.email,
       description: data.description,
       shortDescription: data.shortDescription,
-      location: data.coordinates,
+      location: data.location,
 
     });
    }
