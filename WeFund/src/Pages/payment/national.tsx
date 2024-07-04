@@ -3,11 +3,13 @@ import ButttonPaypal from "../../components/paypal";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/contex";
 import { useNavigate } from "react-router-dom";
+import { LoadingSpinner } from "../../components/loading";
 
 export function National() {
+const [isLoading, setIsLoading] = useState(false);
 const {user}=useAuth();
 const navigate = useNavigate();
-    const [monto, setMonto] = useState(0);
+const [monto, setMonto] = useState(0);
 const [phone, setPhone] = useState("");
 const [amount, setAmount] = useState(0);
 const [bank, setBank] = useState("");
@@ -45,6 +47,7 @@ useEffect(() => {
 
 const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    setIsLoading(true);
     console.log(phone,  parseFloat(amount.toFixed(2)), bank, last_for_digits)
     const data={
         num_phone: phone,
@@ -60,11 +63,12 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
             text: "Por favor, llene todos los campos",
             icon: "warning",
         });
+        setIsLoading(false);
         return
     }
 
     try {
-        const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoMovil ", {
+        const response = await fetch(" https://project-we-fund-logic2-0.onrender.com/pagoMovil ", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -72,28 +76,35 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
         body: JSON.stringify(data),
     })
     .then((response) => {response.json()
+        setIsLoading(false);
         Swal.fire({
             title: "Pago exitoso",
             text: "El pago se ha realizado con éxito",
             icon: "success",
         });
-        navigate("/home");
+        navigate("/");
 
     })
 console.log("Success:", response);
 }
     catch (error) {
-        console.error("Error:", error);
+       Swal.fire({
+        title: "Error",
+        text: "Error en el servidor",
+        icon: "error",
+    });
+    setIsLoading(false);
+
     }
    
     // Aquí va la lógica para hacer el pago
 }
 
     return (
-    
+    <>   {isLoading && <LoadingSpinner />}
    
         <div className="flex flex-col justify-center items-center h-screen bg-gray-200 w-full">
-            <div className="bg-green-500 w-full text-center h-64 flex flex-col  items-center z-0">
+            <div className="bg-green-500 w-full text-center h-64 flex flex-col  items-center mt-[-20px] z-0">
             <h1 className="mt-9 text-1xl  text-white font-bold mb-1">
                 Dolar
             </h1>
@@ -105,7 +116,7 @@ console.log("Success:", response);
             </p>
       
             </div>
-            <div className=" text-center  h-3/4 bg-white z-10 relative mt-[-50px] ">
+            <div className=" text-center  h-full mb-2 shadow-2xl bg-white z-10 relative mt-[-60px] m ">
          <h1 className="text-3xl p-7 font-bold " >Formas de pago</h1>
          <input className="border-2 border-gray-300 p-1 m-1"
                 type="number"
@@ -176,7 +187,7 @@ console.log("Success:", response);
     
       </div>
       </div>
-      
+      </>   
       
     )
   }

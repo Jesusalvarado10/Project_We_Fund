@@ -8,25 +8,44 @@ import { useNavigate } from "react-router-dom";
 import { uploadFile } from "../../Firebase/auth";
 import Swal from "sweetalert2";
 
-function RegistroFundacion() {
+import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
+import { LoadingSpinner } from "../../components/loading";
 
+function RegistroFundacion() {
+const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const [shortDescription, setShortDescription] = useState<string>("");
     const [type, setType] = useState<string>("");
     const [title , setTitle] = useState<string>("");
     const [email, setEmail] = useState('');
     const [description, setDescription] = useState('');
     const [file, setFile] = useState<File | null>(null);
+    const [location, setLocation] = useState<string>("");
+    const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
 
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
        event.preventDefault();
+         setIsLoading(true);
        if(!title || !type || !email || !description) {
               Swal.fire({
-                title: "Missing fields",
-                text: "Please, fill all the fields and try again",
+                title: "Falta información",
+                text: "Por favor, llene todos los campos",
                 icon: "warning",
               });
-              return;
+                setIsLoading(false);
+                return;
+            
        }
+       if (!file) {
+        Swal.fire({
+            title: "Error",
+            text: "Por favor, seleccione un archivo",
+            icon: "warning",
+        });
+        setIsLoading(false);
+        return;
+
+    }
         // if (password !== confirmPassword) {
         //     Swal.fire({
         //         title: "The password doesn't match",
@@ -43,11 +62,25 @@ function RegistroFundacion() {
         //     });
         //     return;
         // }
+        setCoordinates(getCoordinatesFromGoogleMapsLink(location) as [number, number] | null);
+        if (!coordinates) {
+            Swal.fire({
+                title: "Localización incorrecta",
+                text: "Por favor, coloque una localización válida",
+                icon: "warning",
+            });
+            setIsLoading(false);
+            return 
+    
+        }
+        console.log(coordinates)
         const dic = {
             title: title,
             type: type,
             email: email,
             description: description,
+            shortDescription: shortDescription,
+            location: coordinates,
             file: file,
         }
         console.log(dic)
@@ -61,6 +94,8 @@ function RegistroFundacion() {
                 type: type,
                 email: email,
                 description: description,
+                shortDescription: shortDescription,
+                location: coordinates,
                 user: false
       
             }),
@@ -69,20 +104,29 @@ function RegistroFundacion() {
             response.json().then((data) => {
                 console.log(data);
                 if (!file) {
-                    return;
+                    return
                 }
                 uploadFile(data.userId, file);
             });
+            setIsLoading(false);
             Swal.fire({
                 title: "Success",
                 text: "The user has been created successfully",
                 icon: "success",
             }).then(() => {
             navigate('/login');
+            
             })
 
 
     }
+    Swal.fire({
+        title: "Error",
+        text: "Error en el servidor",
+        icon: "error",
+    });
+    setIsLoading(false);
+
     }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -95,7 +139,9 @@ function RegistroFundacion() {
       };
 
   return (
-    <><div className='flex items-center justify-center'>
+    <>
+        {isLoading && <LoadingSpinner />}
+    <div className='flex items-center justify-center'>
 
    
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 py-5 text-center">
@@ -141,9 +187,22 @@ function RegistroFundacion() {
                             value={description}
                             onChange={(ev) => setDescription(ev.target.value)}
                             className="bg-gray-100  w-full px-3 py-2 placeholder-gray-300 text-gray-90 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            placeholder="Enter your message..."
+                            placeholder="Coloque la descripcion de la fundacion..."
                             rows={4} // Define el número inicial de filas del textarea
                         />      
+                        </div>
+                        <div className=" w-64 p-2 flex items-center n-2 mb-3">
+                        <textarea
+                            value={shortDescription}
+                            onChange={(ev) => setShortDescription(ev.target.value)}
+                            className="bg-gray-100  w-full px-3 py-2 placeholder-gray-300 text-gray-90 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            placeholder="Coloque la descripcion corta de la fundacion..."
+                            rows={4} // Define el número inicial de filas del textarea
+                        />      
+                        </div>
+                        <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3">
+                            <LiaAddressCard/>
+                            <input type="nombre" name="nombre" placeholder='Coloque la ubicación 'value={location} onChange={(ev) => setLocation(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1"></input>
                         </div>
                         <div className=" w-64 p-2 flex-col items-center n-2 mb-3 ">
                         <label className="form-control w-full max-w-xs">

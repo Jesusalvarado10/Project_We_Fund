@@ -1,7 +1,3 @@
-
-
-
-
 import { ideaURL, loginURL, homeURL, searchURL, profileURL } from "../../constants/url";
 
 import { useAuth } from "../../context/contex";
@@ -9,12 +5,12 @@ import "./NavBar.css"
 import { useNavigate } from "react-router-dom";
 import PrivateRoute from "../../components/privatenavbar";
 import PrivateRouteUser from "../../components/privateguest";
+
 export function NavBar() {
   const navigate = useNavigate();
   const { user,logout } = useAuth()
   // const {color}=useAuth()
   // const [colorBg, setColorBg] = useState(`bg-${color}`)
- 
 
   return (
     <div className="navbar bg-green-500 z-10">
@@ -32,12 +28,18 @@ export function NavBar() {
       }}>Iniciar sesión</a>
        </li>
        </PrivateRouteUser>
-          <li>
-          <a onClick={()=>{
-       navigate(searchURL)
-      
-      }}>Donar</a>
-          </li>
+       <li>
+          <a>Donar</a>
+          <ul className="p-2 text-black">
+            <li><a>Educación</a></li>
+            <li><a>Salud</a></li>
+            <li><a>Alimentos</a></li>
+            <li><a>Vestimenta</a></li>
+            <li><a>Deporte</a></li>
+            <li><a>...</a></li>
+          </ul>
+        </li>
+
           <li><a onClick={()=>{
        navigate(ideaURL)
       
@@ -50,7 +52,7 @@ export function NavBar() {
       }}>WeFund</a>
     </div>
     <div className="navbar-center hidden lg:flex">
-      <ul className="menu menu-horizontal px-1  z-[1] text-white ">
+      <ul className="menu menu-horizontal px-1  z-[1] text-white  ">
       <PrivateRouteUser>
       <li>
       <a onClick={()=>{
@@ -59,12 +61,45 @@ export function NavBar() {
       }}>Iniciar sesión</a>
        </li>
        </PrivateRouteUser>
-          <li>
-          <a onClick={()=>{
-       navigate(searchURL)
-      
-      }}>Donar</a>
-          </li>
+          
+       <li>
+        <details>
+          <summary>Donar</summary>
+          <ul className="p-3 text-black">
+            <li><a onClick={()=>{
+              const url = `/type/Educación`
+              navigate(url)
+         
+            }}>Educación</a></li>
+            <li><a
+            onClick={()=>{
+              const url = `/type/Salud` 
+              navigate(url)}}
+              >Salud</a></li>
+            <li><a
+                 onClick={()=>{
+                  const url = `/type/Alimentos`
+                  navigate(url)}}
+                  >Alimentos</a></li>
+            <li><a
+                 onClick={()=>{
+                  const url = `/type/Vestimenta`
+                  navigate(url)}}
+            >Vestimenta</a></li>
+            <li><a
+                 onClick={()=>{
+                  const url = `/type/Deporte`
+                  navigate(url)}}
+            >Deporte</a></li>
+            <li><a
+             onClick={()=>{
+              navigate(searchURL)}}
+            >...</a></li>
+          </ul>
+        </details>
+      </li>   
+          
+       
           <li><a onClick={()=>{
        navigate(ideaURL)
       

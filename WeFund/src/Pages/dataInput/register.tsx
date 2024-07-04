@@ -7,8 +7,11 @@ import Swal from 'sweetalert2'
 import { nacionality } from '../../constants/url';
 import { FlagIcon, FlagIconCode } from 'react-flag-kit';
 import { uploadFile } from '../../Firebase/auth';
+import { LoadingSpinner } from '../../components/loading';
+
 
 function Registro() {
+  const [isLoading, setIsLoading] = useState(false);
     const [file, setFile] = useState<File | null>(null);
     const [country, setCountry] = useState<string>("");
     const [code, setCode] = useState<string>(""); // [variable, funcion que actualiza la variable
@@ -46,35 +49,50 @@ function Registro() {
       };
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
        event.preventDefault();
+       setIsLoading(true);
        console.log("hola que hace")
        console.log(country);
       if(!name || !last_name || !email || !password || !confirmPassword || !country || !phone){
         Swal.fire({
-            title: "Empty fields",
-            text: "Please, fill all the fields and try again",
+            title: "Estan vacios los campos",
+            text: "Porfavor, llene todos los campos",
             icon: "warning",
         });
+        setIsLoading(false);
         return;
+
       }
         if (password !== confirmPassword) {
             Swal.fire({
-                title: "The password doesn't match",
-                text: "Please, check the password and try again",
+                title: "La contraseña no coincide con la confirmación de la contraseña",
+                text: "Por favor, verifique la contraseña y vuelva a intentarlo",
                 icon: "warning",
             });
+            setIsLoading(false);
             return;
+
+
         }
         if (password.length < 6) {
             Swal.fire({
-                title: "The password is too short",
-                text: "Please, check the password and try again with a password longer than 6 characters",
+                title: "La contraseña es demasiado corta",
+                text: "Por favor, ingrese una contraseña de al menos 6 caracteres",
                 icon: "warning",
             });
+            setIsLoading(false);
             return;
+
+     
         }
         if(!file){
-            console.log("asdadsad")
-            return 
+            Swal.fire({
+                title: "Error",
+                text: "Por favor, suba una imagen",
+                icon: "error",
+            });
+            setIsLoading(false);
+            return;
+
         }
         const response = await fetch('https://project-we-fund-logic2-0.onrender.com/signUp', {
             method: 'POST',
@@ -100,7 +118,7 @@ function Registro() {
                     }
                     console.log("entro")
                    const img= await uploadFile(data.userId, file);
-                   await fetch('http://localhost:8888/setImga', {
+                   await fetch('https://project-we-fund-logic2-0.onrender.com/setImga', {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
@@ -112,16 +130,25 @@ function Registro() {
                           }),
                      });
                 });
+                setIsLoading(false);
                 Swal.fire({
                     title: "success",
                     text: "Registro exitoso",
                     icon: "success",
                 }).then(() => {
                     navigate('/login');
+
                 })
+               
          
     
     }
+    Swal.fire({
+        title: "Error",
+        text: "Error al registrarse, por favor intente de nuevo",
+        icon: "error",
+    });
+    setIsLoading(false);
     }
     const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -134,7 +161,9 @@ function Registro() {
       };
 
   return (
-    <><div className='flex items-center justify-center'>
+    <>
+     {isLoading && <LoadingSpinner />}
+    <div className='flex items-center justify-center'>
         
 
     </div>
@@ -201,10 +230,10 @@ function Registro() {
                             ))}
                         </select>
                         </div>
-                        <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3">
+                        <div className="bg-gray-100 w-64  mt-2 flex  n-2 mb-3">
                         {country !== "" && (
-                                <div>
-                                    <p className='text-black'>{numberCountry}</p>
+                                <div className='relative top-2.5'>
+                                    <p className='text-black '>{numberCountry}</p>
                                 </div>
                                 )}
                             <input type="phone" name="phone" placeholder='Telefono' value={phone} onChange={(ev) => setPhone(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1"></input>

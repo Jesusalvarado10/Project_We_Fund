@@ -1,21 +1,44 @@
 
+import { useState, useEffect } from "react";
+
+
+interface Foundation {
+    id: string;
+    tittle: string;
+    description: string;
+    banner: string;
+    type: string;
+  }
 
 function Impacto() {
     // Aquí podrías implementar lógica para obtener datos de impacto y fundaciones
     // Por simplicidad, se mostrará un ejemplo estático
+    const [foundations, setFoundations] = useState<Foundation[]>([]);
+    const [data1, setData1] = useState<Foundation[]>([]);
+    console.log(data1);
 
+    useEffect(() => {
+        fetchFoundations();
+    }, []);
+
+    const fetchFoundations = async () => {
+        try {
+        const response = await fetch('https://project-we-fund-logic2-0.onrender.com/fundaciones');
+        if (!response.ok) {
+            throw new Error('Error fetching foundations');
+        }
+        const data = await response.json();
+        setData1(data.fundaciones);
+        setFoundations(data.fundaciones);
+        } catch (error) {
+        console.error('Error fetching foundations:', error);
+        }
+    };    
     const impacto = {
         impactoTotal: 5000,
         seguidores: 2000,
         donaciones: 3000
     };
-
-    
-    const fundaciones = [
-        { nombre: 'Fundación A', descripcion: 'Fundación para la ayuda de niños.' },
-        { nombre: 'Fundación B', descripcion: 'Fundación para la ayuda de animales.' },
-        { nombre: 'Fundación C', descripcion: 'Fundación para la ayuda de personas mayores.' }
-    ];
 
     return (
         <div className="flex flex-col items-center justify-center w-full px-10 py-5">
@@ -38,11 +61,15 @@ function Impacto() {
                         <h2 className="text-xl text-gray-600 mb-2">Fundaciones</h2>
                         <p className="text-sm text-gray-500">Lista de fundaciones vinculadas a tu perfil.</p>
                         <ul className="mt-4 space-y-2">
-                            {fundaciones.map((fundacion, index) => (
-                                <li key={index}>
-                                    <h3 className="text-lg font-semibold">{fundacion.nombre}</h3>
-                                    <p className="text-sm text-gray-600">{fundacion.descripcion}</p>
-                                </li>
+                            {foundations.map(foundation => (
+                                <div key={foundation.id} className="bg-white rounded-lg shadow-lg">
+                                    <img src={foundation.banner} alt="" className="w-full h-32 object-cover object-center" />
+                                    <div className="p-4">
+                                        <h3 className="text-xl font-semibold text-black">{foundation.tittle}</h3>
+                                        <p>{foundation.type}</p>
+                                        
+                                    </div>
+                            </div>
                             ))}
                         </ul>
                     </div>

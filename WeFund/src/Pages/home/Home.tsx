@@ -1,4 +1,3 @@
-
 import "./Home.css"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +6,11 @@ import { ideaURL } from "../../constants/url";
 import op2 from '../../assets/op2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGraduate, faHeartPulse, faBurger, faShirt, faFutbol } from '@fortawesome/free-solid-svg-icons';
-
+import { saludURL } from "../../constants/url";
+import { vestimentaURL } from "../../constants/url";
+import { deporteURL } from "../../constants/url";
+import { educacionURL } from "../../constants/url";
+import { alimentosURL } from "../../constants/url";
 
 interface Foundation {
   id: string;
