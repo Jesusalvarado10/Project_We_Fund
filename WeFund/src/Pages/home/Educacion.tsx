@@ -15,25 +15,25 @@ interface Foundation {
   email: string;
 }
 
-const Salud = () => {
+const HealthFoundations = () => {
   const navigate = useNavigate();
   const [data1, setData1] = useState<Foundation[]>([]);
-  const [salud, setSalud] = useState<Foundation[]>([]);
+  const [healthFoundations, setHealthFoundations] = useState<Foundation[]>([]);
 
   useEffect(() => {
-    fetchSalud();
+    fetchHealthFoundations();
   }, []);
 
-  const fetchSalud = async () => {
+  const fetchHealthFoundations = async () => {
     try {
       const response = await fetch("https://project-we-fund-logic2-0.onrender.com/fundaciones");
       if (!response.ok) {
         throw new Error("Error fetching foundations");
       }
       const data = await response.json();
-      const salud = data.fundaciones.filter((foundation: Foundation) => foundation.type === "Salud");
-      setData1(salud);
-      setSalud(salud);
+      const healthFoundations = data.fundaciones.filter((foundation: Foundation) => foundation.type === "Educacion");
+      setData1(healthFoundations);
+      setHealthFoundations(healthFoundations);
     } catch (error) {
       console.error("Error fetching foundations:", error);
     }
@@ -43,7 +43,7 @@ const Salud = () => {
     <div className="flex flex-col items-center mt-6">
       <div className="h-screen">
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {salud.map((foundation) => (
+          {healthFoundations.map((foundation) => (
             <div key={foundation.id} className="bg-white rounded-lg shadow-lg">
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-black">{foundation.tittle}</h3>
@@ -67,4 +67,4 @@ const Salud = () => {
   );
 };
 
-export default Salud;
+export default HealthFoundations;
