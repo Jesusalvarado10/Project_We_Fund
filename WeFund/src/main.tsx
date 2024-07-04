@@ -17,11 +17,7 @@ import Error404 from './Pages/Menu/Error404'
 import Search from './Pages/home/search'
 import { Type } from './Pages/Pagetype/type'
 import { Foundation } from './Pages/viewFoundation/foundation'
-import Educación from './Pages/categorias/Educacion'
-import CategoriaSalud from './Pages/categorias/Salud'
-import Alimento from './Pages/categorias/Alimentos'
-import Vestimenta from './Pages/categorias/Vestimenta'
-import Deporte from './Pages/categorias/Deporte'
+import Categoria from './Pages/categorias/Categoria'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -43,11 +39,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={typeURL} element={<Type/>} />
               <Route path={fundationsURL} element={<Foundation/>} />
               <Route path="*" element={<Error404 />} />
-              <Route path="/educacion" element={<Educación />} />
-              <Route path="/categoriasalud" element={<CategoriaSalud />} />
-              <Route path="/alimentacion" element={<Alimento />} />
-              <Route path="/vestimenta" element={<Vestimenta />} />
-              <Route path="/deporte" element={<Deporte />} />
+              <Route path="/categoria" element={<Categoria />} />
             </Route>
           </Routes>
         </BrowserRouter>

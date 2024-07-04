@@ -1,7 +1,3 @@
-
-
-
-
 import { ideaURL, loginURL, homeURL, searchURL, profileURL } from "../../constants/url";
 
 import { useAuth } from "../../context/contex";
@@ -9,12 +5,12 @@ import "./NavBar.css"
 import { useNavigate } from "react-router-dom";
 import PrivateRoute from "../../components/privatenavbar";
 import PrivateRouteUser from "../../components/privateguest";
+
 export function NavBar() {
   const navigate = useNavigate();
   const { user,logout } = useAuth()
   // const {color}=useAuth()
   // const [colorBg, setColorBg] = useState(`bg-${color}`)
- 
 
   return (
     <div className="navbar bg-green-500 z-10">
