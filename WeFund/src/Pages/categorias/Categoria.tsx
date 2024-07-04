@@ -13,7 +13,7 @@ function Categoria({ categoriaSeleccionada }: { categoriaSeleccionada: string })
       descripcion:
         "El acceso a una alimentación adecuada es esencial para el bienestar y el desarrollo de las personas. Las fundaciones dedicadas a este sector juegan un papel vital en la lucha contra el hambre y la malnutrición, trabajando incansablemente para asegurar que todos tengan acceso a alimentos nutritivos.",
       imagenUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnLxL1yqi5eCZXAB4ltU6YKycjbbRMmT0NrQ&s",
+        "https://t1.uc.ltmcdn.com/es/posts/1/4/5/como_mejorar_la_alimentacion_de_mi_familia_33541_orig.jpg",
       onStartCampaign: () => {
         alert("Campaña iniciada para Alimento");
       },
@@ -33,7 +33,7 @@ function Categoria({ categoriaSeleccionada }: { categoriaSeleccionada: string })
       descripcion:
         "En el corazón de toda sociedad próspera se encuentra el pilar fundamental de la educación. Las fundaciones dedicadas a este sector juegan un papel crucial en la transformación de comunidades, proporcionando acceso a oportunidades educativas y recursos que pueden cambiar vidas.",
       imagenUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OanKTg-0_XMLPAyM1OT0gzRCnt-U1yR6SA&s",
+        "https://www.bbva.com/wp-content/uploads/2023/06/Sostenibilidad-BBVA-Derecho-educacion-social-1024x575.jpg",
       onStartCampaign: () => {
         alert("Campaña iniciada para Educación");
       },
@@ -43,7 +43,7 @@ function Categoria({ categoriaSeleccionada }: { categoriaSeleccionada: string })
       descripcion:
         "La salud es un derecho fundamental y una piedra angular para el desarrollo de comunidades prósperas. Las fundaciones dedicadas al sector de la salud desempeñan un papel esencial en la mejora del bienestar y la calidad de vida de las personas, especialmente en comunidades vulnerables.",
       imagenUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjNUVdEU3PqdkDc75qxaPcpo_DzLeIiIT_Ow&s",
+        "https://www.udla.edu.ec/wp-content/uploads/2018/04/imagenblogs5485786-790x340.jpg",
       onStartCampaign: () => {
         alert("Campaña iniciada para Salud");
       },
@@ -53,7 +53,7 @@ function Categoria({ categoriaSeleccionada }: { categoriaSeleccionada: string })
       descripcion:
         "La vestimenta adecuada es una necesidad básica que contribuye significativamente al bienestar y la dignidad de las personas. Las fundaciones dedicadas a proporcionar ropa trabajan para garantizar que todos tengan acceso a vestimenta adecuada, sin importar su situación socioeconómica.",
       imagenUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjEcYHUL2vkha5G9TLlxOiFDlmAJW73OoOTg&s",
+        "https://media.licdn.com/dms/image/C4E12AQEf4tolhlijBA/article-cover_image-shrink_600_2000/0/1572954681943?e=2147483647&v=beta&t=sGZX5n0m2GxMvsErqTzxE5uWqXSvWMuwN_TUDEburYA",
       onStartCampaign: () => {
         alert("Campaña iniciada para Vestimenta");
       },
