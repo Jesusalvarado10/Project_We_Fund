@@ -7,11 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 import { uploadFile } from "../../Firebase/auth";
 import Swal from "sweetalert2";
-import { get } from "firebase/database";
+
 import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
+import { LoadingSpinner } from "../../components/loading";
 
 function RegistroFundacion() {
-
+const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [shortDescription, setShortDescription] = useState<string>("");
     const [type, setType] = useState<string>("");
@@ -24,14 +25,27 @@ function RegistroFundacion() {
 
     const handleLogin = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
        event.preventDefault();
+         setIsLoading(true);
        if(!title || !type || !email || !description) {
               Swal.fire({
-                title: "Missing fields",
-                text: "Please, fill all the fields and try again",
+                title: "Falta información",
+                text: "Por favor, llene todos los campos",
                 icon: "warning",
               });
-              return;
+                setIsLoading(false);
+                return;
+            
        }
+       if (!file) {
+        Swal.fire({
+            title: "Error",
+            text: "Por favor, seleccione un archivo",
+            icon: "warning",
+        });
+        setIsLoading(false);
+        return;
+
+    }
         // if (password !== confirmPassword) {
         //     Swal.fire({
         //         title: "The password doesn't match",
@@ -51,11 +65,13 @@ function RegistroFundacion() {
         setCoordinates(getCoordinatesFromGoogleMapsLink(location) as [number, number] | null);
         if (!coordinates) {
             Swal.fire({
-                title: "Invalid location",
-                text: "Please, check the location and try again",
+                title: "Localización incorrecta",
+                text: "Por favor, coloque una localización válida",
                 icon: "warning",
             });
-            return;
+            setIsLoading(false);
+            return 
+    
         }
         console.log(coordinates)
         const dic = {
@@ -88,20 +104,29 @@ function RegistroFundacion() {
             response.json().then((data) => {
                 console.log(data);
                 if (!file) {
-                    return;
+                    return
                 }
                 uploadFile(data.userId, file);
             });
+            setIsLoading(false);
             Swal.fire({
                 title: "Success",
                 text: "The user has been created successfully",
                 icon: "success",
             }).then(() => {
             navigate('/login');
+            
             })
 
 
     }
+    Swal.fire({
+        title: "Error",
+        text: "Error en el servidor",
+        icon: "error",
+    });
+    setIsLoading(false);
+
     }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -114,7 +139,9 @@ function RegistroFundacion() {
       };
 
   return (
-    <><div className='flex items-center justify-center'>
+    <>
+        {isLoading && <LoadingSpinner />}
+    <div className='flex items-center justify-center'>
 
    
       <div className="flex flex-col items-center justify-center w-full flex-1 px-20 py-5 text-center">

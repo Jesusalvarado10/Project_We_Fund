@@ -13,7 +13,7 @@ export const Foundation = () => {
     const {id}=useParams();
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:8888/getFundationID', {
+            const response = await fetch('https://project-we-fund-logic2-0.onrender.com/getFundationID', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

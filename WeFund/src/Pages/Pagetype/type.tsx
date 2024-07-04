@@ -14,7 +14,7 @@ export const Type = () => {
     const { id } = useParams();
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch('http://localhost:8888/getTypes', {
+            const response = await fetch('https://project-we-fund-logic2-0.onrender.com/getTypes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -39,7 +39,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={typeURL} element={<Type/>} />
               <Route path={fundationsURL} element={<Foundation/>} />
               <Route path="*" element={<Error404 />} />
-              <Route path="/categoria" element={<Categoria />} />
+              <Route path="/categoria" element={<Categoria categoriaSeleccionada={''}  />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -17,7 +17,8 @@ function Perfil() {
     const [phone, setPhone] = useState<string>(""); 
     const [numberCountry, setNumberCountry] = useState<string>(""); 
     const [profileImage, setProfileImage] = useState<string>(fotos); 
-
+console.log(numberCountry)
+console.log(profileImage)
     
     useEffect(() => {
         if (user) {

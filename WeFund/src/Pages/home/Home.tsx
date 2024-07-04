@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
 import op2 from '../../assets/op2.png';
-import bambi from '../../assets/bambi.png';
-import fundana from '../../assets/FUNDANA.jpg'
-import aplav from '../../assets/aplav.png'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons/faUserGraduate';
 import { faHeartPulse } from '@fortawesome/free-solid-svg-icons/faHeartPulse';
 import { faBurger } from '@fortawesome/free-solid-svg-icons/faBurger';
 import { faShirt } from '@fortawesome/free-solid-svg-icons/faShirt';
 import { faFutbol } from '@fortawesome/free-solid-svg-icons/faFutbol';
-import { Map, Marker } from "pigeon-maps"
+
 import PigeonMap from "../map/map";
 import { getCoordinatesFromGoogleMapsLink } from "../../assets/funciones";
 import { saludURL } from "../../constants/url";
@@ -27,12 +25,16 @@ function Home() {
   const [location, setLocation] = useState<string>("");
   const [currentFundacion, setCurrentFundacion] = useState(0);
   const centerVenezuela: [number, number] = [6.4238, -66.5897];
+  console.log(centerVenezuela);
+  console.log(currentFundacion);
+  setCurrentFundacion(0);
   const defaultZoom: number = 80;
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
-  const handlePrev = () => {
-    setCurrentFundacion((prev) => ((prev) === 0 ? fundaciones.length - 1 : prev - 1));
-  };
+  // const handlePrev = () => {
+  //   setCurrentFundacion((prev) => ((prev) === 0 ? fundaciones.length - 1 : prev - 1));
+  // };
   const [data1, setData1] = useState<Foundation[]>([]);
+  console.log(data1);
   const [foundations, setFoundations] = useState<Foundation[]>([]);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   setLocation(event.target.value);
@@ -43,9 +45,9 @@ function Home() {
       setCoordinates(null);
   }
 };
-  const handleNext = () => {
-    setCurrentFundacion((prev) => (prev === fundaciones.length - 1 ? 0 : prev + 1));
-  };
+  // const handleNext = () => {
+  //   setCurrentFundacion((prev) => (prev === fundaciones.length - 1 ? 0 : prev + 1));
+  // };
 
   useEffect(() => {
     fetchFoundations();

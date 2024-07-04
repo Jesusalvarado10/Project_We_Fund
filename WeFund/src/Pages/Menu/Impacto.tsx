@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 interface Foundation {
     id: string;
@@ -15,6 +15,7 @@ function Impacto() {
     // Por simplicidad, se mostrará un ejemplo estático
     const [foundations, setFoundations] = useState<Foundation[]>([]);
     const [data1, setData1] = useState<Foundation[]>([]);
+    console.log(data1);
 
     useEffect(() => {
         fetchFoundations();
