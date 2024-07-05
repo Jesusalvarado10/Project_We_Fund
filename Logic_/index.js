@@ -12,22 +12,29 @@ const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 const app = express();
 const urlBackendlocal="http://localhost:3000";
+const accountSid = process.env.ACCOUNT_SID;  // Usar variable de entorno
+const authToken = process.env.AUTH_TOKEN; 
+const client = require('twilio')(accountSid, authToken);
 
 const { pyDolarVenezuela } = require("consulta-dolar-venezuela");
+const { message } = require('telegraf/filters');
 
 const pyDolar = new pyDolarVenezuela('bcv');
 
 
 app.disable('x-powered-by');
+
 app.use(cors());
+
 app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/getTypes", async (req, res) => {
   const data = req.body;
   console.log(data.id)
-
   try {
     // Envía el objeto `data` al otro servidor en localhost
     const response = await fetch(`${urlBackend}/getTypes`, {
@@ -49,6 +56,7 @@ app.post("/getTypes", async (req, res) => {
   }
 }
 )
+
 app.get("/dolar", async (req, res) => {
   try {
     const currentDate = new Date();
@@ -77,6 +85,18 @@ app.get("/dolar", async (req, res) => {
     res.status(500).send("Error fetching dolar value");
   }
 });
+
+const messageInfo=(mensaje, phone)=>{
+client.messages
+    .create({
+        from: '+15597025143', // Tu número Twilio
+        to: `+58${phone}`, // Número de destino
+        body: mensaje// El contenido del mensaje
+    })
+    .then(message => console.log('Message SID:', message.sid)) // Manejo de la respuesta
+    .catch(error => console.error('Error:', error)); // Manejo de errores
+  }
+
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 app.post('/signUp', async (req, res) => {
@@ -149,6 +169,7 @@ app.get("/fundaciones", async (req, res) => {
     res.status(500).send('Error fetching data from server');
 }
 });
+
 app.post('/pagoPaypall', async (req, res) => {
   const data = req.body;
 
@@ -172,6 +193,7 @@ app.post('/pagoPaypall', async (req, res) => {
     res.status(500).send('Error sending data to another server');
 }
 });
+
 const keepAlive = () => {
   axios.get(`https://project-we-fund-logic2-0.onrender.com/keepalive1`)
     .then(response => {
@@ -210,6 +232,7 @@ app.post('/setImga', async (req, res) => {
     res.status(200).send(data);
 }
 )})
+
 app.post("/getFundationID", async (req, res) => {
   const data = req.body;
   console.log(data.id)
@@ -234,6 +257,7 @@ app.post("/getFundationID", async (req, res) => {
     res.status(500).send('Error sending data to another server');
   }
 })
+
 app.get('/keepalive1', (req, res) => {
   console.log('Keepalive GET endpoint hit');
   res.sendStatus(200);
@@ -244,6 +268,7 @@ app.head('/keepalive', (req, res) => {
   console.log('Keepalive HEAD endpoint hit');
   res.sendStatus(200);
 });
+
 app.post("/api/orders", async (req, res) => {
     try {
     console.log("Received request to /api");
@@ -285,11 +310,9 @@ app.post("/api/orders", async (req, res) => {
       res.status(500).json({ error: "Failed to capture order." });
     }
   });
+
   app.post('/pagoMovil', async (req, res) => {
     const data = req.body;
-
-   
-
     try {
       // Envía el objeto `data` al otro servidor en localhost
       const response = await fetch(`${urlBackend}/pagoMovilAgregar`, {
@@ -302,8 +325,10 @@ app.post("/api/orders", async (req, res) => {
 
       // Obtén la respuesta del otro servidor
       const responseData = await response.json();
-
-      // Envía la respuesta del otro servidor al cliente
+      if(response.status==200){
+        messageInfo("El pago se esta procesando tomara unos días.", data.num_phone)
+      }
+      
       res.status(response.status).send(responseData);
   } catch (error) {
       console.error('Error sending data to another server:', error);
@@ -312,13 +337,14 @@ app.post("/api/orders", async (req, res) => {
 });
 
   // Serve index.html
-  app.get("/", (req, res) => {
+app.get("/", (req, res) => {
     res.sendFile(path.resolve("./checkout.html"));
   });
   
-  app.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Node server listening at http://localhost:${PORT}/`);
   });
+
 app.use((req, res, next) => {
   console.log(`Request to ${req.url} returned 404`);
   res.status(404).send("404: Not Found");
@@ -533,7 +559,7 @@ bot.action(/^confirmado_(\d+)$/, async (ctx) => {
           if (!response.ok) {
               throw new Error('Network response was not ok');
           }
-
+          messageInfo("El pago se ha confirmado", confirmedData.num_phone)
           ctx.reply('El pago ha sido confirmado exitosamente.');
 
        
@@ -557,6 +583,7 @@ bot.action(/^confirmado_(\d+)$/, async (ctx) => {
       ctx.reply('Opción no válida. Por favor, selecciona una opción válida.');
   }
 });
+
 bot.launch()
   .then(() => {
     console.log('Bot iniciado exitosamente');
