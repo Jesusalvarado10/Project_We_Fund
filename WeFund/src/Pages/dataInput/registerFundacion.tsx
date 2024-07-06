@@ -171,7 +171,7 @@ const [isLoading, setIsLoading] = useState(false);
                                 className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                             <option  value="">Choose a type</option>          
-                            <option value="Educacion">Educacion</option>
+                            <option value="Educacion">Educación</option>
                             <option value="Salud">Salud</option>
                             <option value="Alimentos">Alimentos</option>
                             <option value="Vestimenta">Vestimenta</option>

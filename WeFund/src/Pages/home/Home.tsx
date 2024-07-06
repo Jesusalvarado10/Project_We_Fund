@@ -23,6 +23,7 @@ interface Foundation {
   shortDescription: string;
   type: string;
   email: string;
+  banner: string;
 }
 
 const Home = () => {
@@ -41,7 +42,7 @@ const Home = () => {
         throw new Error('Error fetching foundations');
       }
       const data = await response.json();
-      const home = data.fundaciones.filter(foundation => foundation.type = 'Salud', 'Educación', 'Alimentos', 'Vestimenta', 'Deporte');
+      const home = data.fundaciones.filter((foundation: { type: string; }) => foundation.type = 'Salud', 'Educación', 'Alimentos', 'Vestimenta', 'Deporte');
       setData1(home);
       setHome(home);
     } catch (error) {
@@ -117,16 +118,16 @@ const Home = () => {
       </div>
 
 
-      <div class="flex flex-col items-center justify-center w-full flex-1 px-20 py-10 text-center">
-  <div class="bg-white shadow-md rounded-lg p-6 my-10">
-    <h2 class="text-2xl font-bold mb-4">¿Quiénes somos?</h2>
+      <div className="flex flex-col items-center justify-center w-full flex-1 px-20 py-10 text-center">
+  <div className="bg-white shadow-md rounded-lg p-6 my-10">
+    <h2 className="text-2xl font-bold mb-4">¿Quiénes somos?</h2>
 
     <p>WeFund es una innovadora plataforma de crowdfunding diseñada específicamente para ayudar a fundaciones a recaudar fondos de manera efectiva y transparente.</p>
     <p>A través de WeFund, las fundaciones pueden crear campañas personalizadas, compartir sus historias y objetivos, y alcanzar a una amplia audiencia de potenciales donantes.</p>
     <p>Para los donantes, WeFund proporciona una experiencia segura y transparente, permitiéndoles explorar diversas causas, realizar donaciones de forma sencilla</p>
-    <h5 class="font-bold">¡Conoce quienes somos, nuestra mision, vision y valores!</h5>
+    <h5 className="font-bold">¡Conoce quienes somos, nuestra mision, vision y valores!</h5>
     <button
-      class="mt-4 bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded"
+      className="mt-4 bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded"
       onClick={() => {
         navigate(ideaURL)
       }}
@@ -142,7 +143,7 @@ const Home = () => {
       />
       <div className="flex flex-col items-center mt-6">
       <div className="h-screen">
-      <h2 class="text-2xl text-center font-bold mb-4">Algunas fundaciones</h2>
+      <h2 className="text-2xl text-center font-bold mb-4">Algunas fundaciones</h2>
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {home.map(foundation => (
             <div key={foundation.id} className="bg-white rounded-lg shadow-lg">
