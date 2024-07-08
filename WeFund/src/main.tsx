@@ -18,6 +18,7 @@ import Search from './Pages/home/search'
 import { Type } from './Pages/Pagetype/type'
 import { Foundation } from './Pages/viewFoundation/foundation'
 import Categoria from './Pages/categorias/Categoria'
+import Salud from './Pages/home/Salud'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -40,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Route path={fundationsURL} element={<Foundation/>} />
               <Route path="*" element={<Error404 />} />
               <Route path="/categoria" element={<Categoria categoriaSeleccionada={''}  />} />
+              <Route path='/salud' element={<Salud></Salud>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
