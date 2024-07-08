@@ -6,11 +6,7 @@ import { ideaURL } from "../../constants/url";
 import op2 from '../../assets/op2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGraduate, faHeartPulse, faBurger, faShirt, faFutbol } from '@fortawesome/free-solid-svg-icons';
-import { saludURL } from "../../constants/url";
-import { vestimentaURL } from "../../constants/url";
-import { deporteURL } from "../../constants/url";
-import { educacionURL } from "../../constants/url";
-import { alimentosURL } from "../../constants/url";
+
 
 interface Foundation {
   id: string;
@@ -57,7 +53,11 @@ const Home = () => {
 <div className="grid grid-cols-5 items-center justify-center gap-4 py-2 md:py-3 px-4 md:px-8">
 
 
-  <a href={"#"} className="flex flex-col items-center text-gray-700 group">
+  <a onClick={()=>{
+    const url = `/type/Educación`
+       navigate(url)
+      
+      }}   className="flex flex-col items-center text-gray-700 group">
     <FontAwesomeIcon 
       icon={faUserGraduate} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
@@ -68,7 +68,8 @@ const Home = () => {
     </span>
   </a>
   <a onClick={()=>{
-       navigate(saludURL)
+     const url = `/type/Salud` 
+       navigate(url)
       
       }} className="flex flex-col items-center text-gray-700 group">
   <FontAwesomeIcon icon={faHeartPulse} 
@@ -80,7 +81,11 @@ const Home = () => {
     </span>
   </a>
 
-  <a href="#" className="flex flex-col items-center text-gray-700 group">
+  <a  onClick={()=>{
+    const url = `/type/Alimentos`
+       navigate(url)
+      
+      }}  className="flex flex-col items-center text-gray-700 group">
   <FontAwesomeIcon icon={faBurger} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
@@ -89,7 +94,11 @@ const Home = () => {
       Alimentos
     </span>
   </a>
-  <a href="#" className="flex flex-col items-center text-gray-700 group">
+  <a  onClick={()=>{
+    const url = `/type/Vestimenta`
+       navigate(url)
+      
+      }}  className="flex flex-col items-center text-gray-700 group">
   <FontAwesomeIcon icon={faShirt}  
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
@@ -98,7 +107,11 @@ const Home = () => {
       Vestimenta
     </span>
   </a>
-  <a href="#" className="flex flex-col items-center text-gray-700 group">
+  <a  onClick={()=>{
+    const url = `/type/Deporte`
+       navigate(url)
+      
+      }}   className="flex flex-col items-center text-gray-700 group">
   <FontAwesomeIcon icon={faFutbol} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
