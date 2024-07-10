@@ -67,43 +67,44 @@ export const FoundationView = () => {
     // Parse location string to get latitude and longitude
 
     return (
-        <div className="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-                <div className="md:flex">
-                    <div className="md:flex-shrink-0">
-                        <img className="h-48 w-full object-cover md:w-48" src={foundation.photo} alt={foundation.tittle} />
-                    </div>
-                    <div className="p-8">
-                        <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{foundation.type}</div>
-                        <h1 className="block mt-1 text-lg leading-tight font-medium text-black">{foundation.tittle}</h1>
-                        <p className="mt-2 text-gray-500">{foundation.shortDescription}</p>
-                        <div className="mt-4">
-                            <h2 className="text-gray-700 font-bold">Descripción:</h2>
-                            <p className="mt-1 text-gray-600">{foundation.description}</p>
-                        </div>
-                        <div className="mt-4">
-                            <h2 className="text-gray-700 font-bold">Contacto:</h2>
-                            <p className="mt-1 text-gray-600">Email: {foundation.email}</p>
-             
-                        </div>
-                        <div className="mt-6">
-                            <button 
-                                className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600 transition duration-300"
-                                onClick={() => {/* Add donation logic */}}
-                            >
-                                Donate Now
-                            </button>
-                        </div>
-                        <div className="mt-9">
-                            <h2 className="text-gray-700 font-bold mb-7">Ubicación:</h2>  
-                            <Map height={300} defaultCenter={[foundation.location.latitude, foundation.location.longitude]} defaultZoom={11}>
-                                <ZoomControl />
-                                <Marker width={50} anchor={[foundation.location.latitude, foundation.location.longitude]} />
-                            </Map>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div className="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+    <div className="md:flex">
+      <div className="md:flex-shrink-0">
+        <img className="h-48 w-full object-cover md:w-48" src={foundation.photo} alt={foundation.tittle} />
+      </div>
+      <div className="p-8">
+        <div className="uppercase tracking-wide text-sm text-green-500 font-semibold">{foundation.type}</div>
+        <h1 className="block mt-1 text-lg leading-tight font-medium text-black">{foundation.tittle}</h1>
+        <p className="mt-2 text-gray-500">{foundation.shortDescription}</p>
+        <div className="mt-4">
+          <h2 className="text-gray-700 font-bold">Descripción:</h2>
+          <p className="mt-1 text-gray-600">{foundation.description}</p>
         </div>
+        <div className="mt-4">
+          <h2 className="text-gray-700 font-bold">Contacto:</h2>
+          <p className="mt-1 text-gray-600">Email: {foundation.email}</p>
+        </div>
+        <div className="mt-6">
+          <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-indigo-600 transition duration-300">
+            Donar
+          </button>
+        </div>
+        <div className="mt-9">
+          <h2 className="text-gray-700 font-bold mb-7">Ubicación:</h2>
+          <Map height={300} defaultCenter={[foundation.location.latitude, foundation.location.longitude]} defaultZoom={11}>
+            <ZoomControl />
+            <Marker width={50} anchor={[foundation.location.latitude, foundation.location.longitude]} />
+          </Map>
+        </div>
+        <div className="mt-6">
+          <a href={`mailto:${foundation.email}?subject=Quiero ser parte de ustedes&body=Hola, mi nombre es {ESCRIBA SU NOMBRE} y me gustaría ser voluntario.`} className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">
+            Quiero ser voluntario
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     );
 }
