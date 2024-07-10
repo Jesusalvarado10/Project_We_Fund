@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.perfil-container {
+    max-width: 600px; /* Aumenta el ancho máximo */
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar elementos horizontalmente */
+}
+
+.perfil-header {
+    font-size: 24px;
+    color: #6a1b9a;
+}
+
+.perfil-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar elementos horizontalmente */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+
+.perfil-foto {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.perfil-cambiar-foto {
+    background-color: #6a1b9a;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.perfil-info {
+    margin-top: 20px;
+    text-align: left;
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    max-width: 400px; /* Ancho máximo del área de información */
+    margin: 0 auto; /* Centra el área de información horizontalmente */
+}
+
+.perfil-info-item {
+    margin-bottom: 20px;
+}
+
+.perfil-info-item label {
+    display: block;
+    color: #6a1b9a;
+    font-weight: bold;
+}
+
+.perfil-info-item input {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+}
+
+.perfil-info-item input:focus {
+    border-color: #6a1b9a;
+}
+
+.perfil-guardar, .perfil-eliminar {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin: 10px 5px;
+    cursor: pointer;
+    border: none;
+}
+
+.perfil-guardar {
+    background-color: #6a1b9a;
+    color: #fff;
+}
+
+.perfil-eliminar {
+    background-color: transparent;
+    color: #6a1b9a;
+    border: 2px solid #6a1b9a;
+}
