@@ -101,12 +101,24 @@ const [isLoading, setIsLoading] = useState(false);
             }),
             });
         if (response.ok) {
-            response.json().then((data) => {
+            response.json().then(async (data) => {
                 console.log(data);
                 if (!file) {
                     return
                 }
-                uploadFile(data.userId, file);
+                const img= await uploadFile(data.userId, file);
+                await fetch('https://project-we-fund-logic2-0.onrender.com/setImga', {
+                       method: 'POST',
+                       headers: {
+                         'Content-Type': 'application/json',
+                       },
+                       body: JSON.stringify({
+                         id: data.userId,
+                         img: img,
+                         user: false,
+                       }),
+                  });
+
             });
             setIsLoading(false);
             Swal.fire({
@@ -120,11 +132,7 @@ const [isLoading, setIsLoading] = useState(false);
 
 
     }
-    Swal.fire({
-        title: "Error",
-        text: "Error en el servidor",
-        icon: "error",
-    });
+  
     setIsLoading(false);
 
     }
@@ -175,7 +183,7 @@ const [isLoading, setIsLoading] = useState(false);
                             <option value="Salud">Salud</option>
                             <option value="Alimentos">Alimentos</option>
                             <option value="Vestimenta">Vestimenta</option>
-                            <option value="Deportes">Deportes</option>  
+                            <option value="Deportes">Deporte</option>  
                         </select>
                         </div>
                         <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3 ">

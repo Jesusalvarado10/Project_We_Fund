@@ -50,7 +50,7 @@ export async function signInWithEmailAndPasswordAndFetchUserData(email: string, 
 
         // Obtiene la URL de descarga de la imagen
         const imageUrl = await getDownloadURL(storageRef);
-  console.log(imageUrl)
+        console.log(imageUrl)
 
         return imageUrl; // Devuelve la URL de descarga de la imagen
     } catch (error) {

@@ -6,26 +6,15 @@ import { ideaURL } from "../../constants/url";
 import op2 from '../../assets/op2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGraduate, faHeartPulse, faBurger, faShirt, faFutbol } from '@fortawesome/free-solid-svg-icons';
+import { Foundation } from "../../Class/foundation";
+import { getImageUrl } from "../../Firebase/auth";
 
 
-interface Foundation {
-  id: string;
-  tittle: string;
-  description: string;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-  shortDescription: string;
-  type: string;
-  email: string;
-  banner: string;
-}
 
 const Home = () => {
   const navigate = useNavigate();
   const [data1, setData1] = useState<Foundation[]>([]);
-  const [home, setHome] = useState<Foundation[]>([]);
+  const [fundaciones, setFundaciones] = useState<Foundation[]>([]);
 
   useEffect(() => {
     fetchHome();
@@ -38,9 +27,28 @@ const Home = () => {
         throw new Error('Error fetching foundations');
       }
       const data = await response.json();
-      const home = data.fundaciones.filter((foundation: { type: string; }) => foundation.type = 'Salud', 'Educación', 'Alimentos', 'Vestimenta', 'Deporte');
-      setData1(home);
-      setHome(home);
+  
+      const foundationPromises = data.fundaciones.map(async (foundation: any) => {
+        const fundation = new Foundation(
+          foundation.id,
+          foundation.tittle,
+          foundation.img,
+          foundation.description,
+          foundation.shortDescription,
+          foundation.type,
+          foundation.email,
+          foundation.location
+        );
+        const photo = await getImageUrl(foundation.id, foundation.img);
+        if (photo) {
+          fundation.setPhoto(photo);
+        }
+        return fundation;
+      });
+
+      const resolvedFoundations = await Promise.all(foundationPromises);
+      setFundaciones(resolvedFoundations);
+
     } catch (error) {
       console.error('Error fetching foundations:', error);
     }
@@ -155,28 +163,38 @@ const Home = () => {
         className="w-full h-48 object-cover mb-4"
       />
       <div className="flex flex-col items-center mt-6">
-      <div className="h-screen">
-      <h2 className="text-2xl text-center font-bold mb-4">Algunas fundaciones</h2>
-        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {home.map(foundation => (
-            <div key={foundation.id} className="bg-white rounded-lg shadow-lg">
-              <img src={foundation.banner} alt="" className="w-full h-32 object-cover object-center" />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-black">{foundation.tittle}</h3>
-               
-                <button
-                  className="mt-4 bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded"
-                  onClick={() => {
-                    navigate(nationalURL)
-                  }}
-                >
-                  Donar
-                </button>
-              </div>
+      <div className="flex flex-col items-center mt-6">
+  <h2 className="text-2xl text-center font-bold mb-4">Algunas fundaciones</h2>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+      {fundaciones.map(foundation => (
+        <div key={foundation.id} className="bg-white rounded-lg shadow-lg flex flex-col">
+          <img src={foundation.photo} alt={foundation.tittle} className="w-full h-48 object-cover object-center rounded-t-lg" />
+          <div className="p-4 flex-grow">
+            <h3 className="text-xl font-semibold text-black mb-2">{foundation.tittle}</h3>
+            <p className="text-gray-600 mb-4">{foundation.type}</p>
+            <div className="mt-auto flex justify-between">
+              <button
+                className="bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded transition duration-300"
+                onClick={() => {
+                  // Add donation logic here
+                }}
+              >
+                Donar
+              </button>
+              <button
+                className="bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded transition duration-300"
+                onClick={() => navigate(`/fundations/${foundation.id}`)}
+              >
+                Ver más	
+              </button>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
     </div>
     
     </>
