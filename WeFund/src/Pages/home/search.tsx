@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Foundation } from "../../Class/foundation";
 import { getImageUrl } from "../../Firebase/auth";
 import { LoadingSpinner } from "../../components/loading";
-import { nationalURL } from "../../constants/url";
+
 
 const Search = () => {
   const navigate = useNavigate();

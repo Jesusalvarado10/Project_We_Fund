@@ -19,6 +19,7 @@ const Salud = () => {
   const navigate = useNavigate();
   const [data1, setData1] = useState<Foundation[]>([]);
   const [salud, setSalud] = useState<Foundation[]>([]);
+  console.log(data1);
 
   useEffect(() => {
     fetchSalud();

@@ -1,7 +1,7 @@
 import "./Home.css"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { nationalURL } from "../../constants/url";
+
 import { ideaURL } from "../../constants/url";
 import op2 from '../../assets/op2.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +13,6 @@ import { getImageUrl } from "../../Firebase/auth";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [data1, setData1] = useState<Foundation[]>([]);
   const [fundaciones, setFundaciones] = useState<Foundation[]>([]);
 
   useEffect(() => {

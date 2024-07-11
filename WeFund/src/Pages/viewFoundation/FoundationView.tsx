@@ -8,7 +8,7 @@ import { useAuth } from "../../context/contex";
 import Swal from "sweetalert2";
 
 export const FoundationView = () => {
-    const [payments, setPayments] = useState<{amount: any}[]>([]);
+    const [payments, setPayments] = useState<{monto: any}[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
