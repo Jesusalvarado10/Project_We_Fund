@@ -33,7 +33,7 @@ export const FoundationView = () => {
         }
 
         try{
-            const response = fetch(' http://localhost:8888/addVoluntariado', {
+            const response = fetch('https://project-we-fund-a8vb.onrender.com/addVoluntariado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export const FoundationView = () => {
         };
         const fetchVolunteers = async () => {
             try {
-                const response = await fetch('http://localhost:8888/getVoluntariados', {
+                const response = await fetch('https://project-we-fund-a8vb.onrender.com/getVoluntariados', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

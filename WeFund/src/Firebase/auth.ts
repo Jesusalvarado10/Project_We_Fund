@@ -45,7 +45,7 @@ export async function signInWithEmailAndPasswordAndFetchUserData(email: string, 
 export async function getPayments (id: string)
 {
     try {
-        const response = await fetch('http://localhost:8888/getPayments', {
+        const response = await fetch('https://project-we-fund-a8vb.onrender.com/getPayments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
