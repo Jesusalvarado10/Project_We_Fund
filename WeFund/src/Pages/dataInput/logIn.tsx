@@ -75,7 +75,7 @@ function Inicio() {
               text: 'Inicio de sesión exitoso',
               icon: 'success',
             }).then(() => {
-              const user = new User(iduser as unknown as string,responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone, responseData.userId.country);
+              const user = new User(iduser.user.uid ,responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone, responseData.userId.country);
               login(user);
               navigate('/');
             });

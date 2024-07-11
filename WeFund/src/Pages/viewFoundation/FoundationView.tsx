@@ -5,34 +5,63 @@ import { getImageUrl } from "../../Firebase/auth";
 import { LoadingSpinner } from "../../components/loading";
 import { Map, ZoomControl, Marker } from 'pigeon-maps'
 import { useAuth } from "../../context/contex";
+import Swal from "sweetalert2";
 
 export const FoundationView = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [foundation, setFoundation] = useState<Foundation | null>(null);
     const { id } = useParams();
     const {user}= useAuth();    
-    const handdleVoluntario = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const [showVolunteers, setShowVolunteers] = useState(false);
+    const [volunteers, setVolunteers] = useState<{ name: string, last_name: string }[]>([]);
+    const handdleVoluntario = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
+        setIsLoading(true); 
         if(!user){
+            Swal.fire({
+                title: 'Error',
+                text: 'Debe iniciar sesión para ser voluntario',
+                icon: 'question',
+            }); 
             navigate("/logIn");
+            setIsLoading(false);    
             return;
         }
         try{
-            const response = fetch('http://localhost:8888/addVoluntariado', {
+            const response = fetch(' http://localhost:8888/addVoluntariado', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ "userId": user?.id , "fundacionId":id}),
+                body: JSON.stringify({ "userId": user?.id , "fundacionId":id,
+                    "name": user?.name, "last_name": user?.last_name
+                }),
             });
             if (!(await response).ok) {
-                throw new Error('Network response was not ok');
+                Swal.fire({
+                    title: 'Error',
+                    text: 'No se pudo agregar el voluntario',
+                    icon: 'error',
+                });
+                setIsLoading(false);    
+                return 
             }
+            Swal.fire({
+                title: 'Voluntario agregado',
+                text: 'Usted se ha registrado como voluntario',
+                icon: 'success',
+            });
+            setIsLoading(false);    
+
             console.log("Voluntario agregado")
         }catch(error){
+            
+            setIsLoading(false);    
             console.error("Error fetching foundation:", error);
         }
+
     }
 
     useEffect(() => {
@@ -69,13 +98,40 @@ export const FoundationView = () => {
                     }
                 
                     setFoundation(fundation);
-                    setLoading(false);
+             
                 }
+        setLoading(false);  
+
             } catch (error) {
                 console.error("Error fetching foundation:", error);
                 navigate("*");
             }
         };
+        const fetchVolunteers = async () => {
+            try {
+                const response = await fetch('http://localhost:8888/getVoluntariados', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ "fundacionId": id }),
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+                if (data && data.voluntariados && data.voluntariados.volunteers) {
+                    setVolunteers(data.voluntariados.volunteers);
+                }
+                setLoading(false);  
+
+            } catch (error) {
+                console.error("Error fetching volunteers:", error);
+            }
+        }
+        fetchVolunteers();
 
         fetchData();
     }, [id, navigate]);
@@ -91,6 +147,9 @@ export const FoundationView = () => {
     // Parse location string to get latitude and longitude
 
     return (
+        <>{
+            isLoading && <LoadingSpinner />
+        }
 <div className="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
   <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
     <div className="md:flex">
@@ -122,13 +181,31 @@ export const FoundationView = () => {
           </Map>
         </div>
         <div className="mt-6">
-          <a onClick={handdleVoluntario} className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300 ">
+          <button onClick={handdleVoluntario} className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300 ">
             Quiero ser voluntario
-          </a>
+          </button>
         </div>
       </div>
     </div>
   </div>
+  <div className="max-w-4xl mx-auto mt-8">
+                <div 
+                    className="bg-white p-4 rounded-lg shadow cursor-pointer"
+                    onClick={() => setShowVolunteers(!showVolunteers)}
+                >
+                    <h2 className="text-xl font-bold text-center ">Voluntarios</h2>
+                    {showVolunteers && (
+                        <ul className="mt-4">
+                            {volunteers.map((volunteer, index) => (
+                                <li key={index} className="py-2 border-b last:border-b-0">
+                                    {volunteer.name} {volunteer.last_name}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </div>
 </div>
+</>
     );
 }
