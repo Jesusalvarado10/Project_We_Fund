@@ -87,14 +87,22 @@ const Idea: React.FC = () => {
       </div>
 
       <footer className="w-full mt-8 py-4 bg-green-500 text-white text-center">
-        <p className="font-bold mb-2">Contacta a los desarrolladores:</p>
-        <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4">
-          <p>Maria Cuervo <a href="mailto:mcuervo@correo.unimet.edu.ve" className="text-white hover:underline">mcuervo@correo.unimet.edu.ve</a></p>
-          <p>Jesus Alvarado <a href="mailto:jesus.alvarado@correo.unimet.edu.ve" className="text-white hover:underline">jesus.alvarado@correo.unimet.edu.ve</a></p>
-          <p>Andrea Pinto <a href="mailto:andrea.pinto@correo.unimet.edu.ve" className="text-white hover:underline">andrea.pinto@correo.unimet.edu.ve</a></p>
-          <p>Rodrigo Egaña <a href="mailto:regana@correo.unimet.edu.ve" className="text-white hover:underline">regana@correo.unimet.edu.ve</a></p>
-        </div>
-      </footer>
+  <p className="font-bold mb-2">Contacta a los desarrolladores:</p>
+  <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-3">
+    <div className="flex items-center">
+      <p>Maria Cuervo<a href="mailto:mcuervo@correo.unimet.edu.ve" className="text-white hover:underline ml-2">mcuervo@correo.unimet.edu.ve</a></p>    
+    </div>
+    <div className="flex items-center">
+      <p>Jesus Alvarado<a href="mailto:jesus.alvarado@correo.unimet.edu.ve" className="text-white hover:underline ml-2">jesus.alvarado@correo.unimet.edu.ve</a></p>    
+    </div>
+    <div className="flex items-center">
+      <p>Andrea Pinto <a href="mailto:andrea.pinto@correo.unimet.edu.ve" className="text-white hover:underline ml-2">andrea.pinto@correo.unimet.edu.ve</a></p>    
+    </div>
+    <div className="flex items-center">
+      <p>Rodrigo Egaña<a href="mailto:regana@correo.unimet.edu.ve" className="text-white hover:underline ml-2">regana@correo.unimet.edu.ve</a></p>   
+    </div>
+  </div>
+</footer>
     </div>
   );
 };
