@@ -84,7 +84,7 @@ const [isLoading, setIsLoading] = useState(false);
             file: file,
         }
         console.log(dic)
-        const response = await fetch('https://project-we-fund-logic2-0.onrender.com/signUp', {
+        const response = await fetch('https://project-we-fund-a8vb.onrender.com/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -101,12 +101,24 @@ const [isLoading, setIsLoading] = useState(false);
             }),
             });
         if (response.ok) {
-            response.json().then((data) => {
+            response.json().then(async (data) => {
                 console.log(data);
                 if (!file) {
                     return
                 }
-                uploadFile(data.userId, file);
+                const img= await uploadFile(data.userId, file);
+                await fetch('https://project-we-fund-a8vb.onrender.com/setImga', {
+                       method: 'POST',
+                       headers: {
+                         'Content-Type': 'application/json',
+                       },
+                       body: JSON.stringify({
+                         id: data.userId,
+                         img: img,
+                         user: false,
+                       }),
+                  });
+
             });
             setIsLoading(false);
             Swal.fire({
@@ -120,11 +132,7 @@ const [isLoading, setIsLoading] = useState(false);
 
 
     }
-    Swal.fire({
-        title: "Error",
-        text: "Error en el servidor",
-        icon: "error",
-    });
+  
     setIsLoading(false);
 
     }
@@ -171,11 +179,11 @@ const [isLoading, setIsLoading] = useState(false);
                                 className="bg-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:text-black dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                             <option  value="">Choose a type</option>          
-                            <option value="Educacion">Educacion</option>
+                            <option value="Educacion">Educación</option>
                             <option value="Salud">Salud</option>
                             <option value="Alimentos">Alimentos</option>
                             <option value="Vestimenta">Vestimenta</option>
-                            <option value="Deportes">Deportes</option>  
+                            <option value="Deportes">Deporte</option>  
                         </select>
                         </div>
                         <div className="bg-gray-100 w-64 p-2 flex items-center n-2 mb-3 ">

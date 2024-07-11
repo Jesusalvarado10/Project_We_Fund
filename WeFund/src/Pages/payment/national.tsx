@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import ButttonPaypal from "../../components/paypal";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/contex";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LoadingSpinner } from "../../components/loading";
 
 export function National() {
+    const {id} = useParams();
 const [isLoading, setIsLoading] = useState(false);
 const {user}=useAuth();
 const navigate = useNavigate();
@@ -26,7 +27,7 @@ useEffect(() => {
         setPhone(user.phone)
     }
    if(dolarBNV===0){     
-    fetch("https://project-we-fund-logic2-0.onrender.com/dolar")
+    fetch("https://project-we-fund-a8vb.onrender.com/dolar")
         .then(response => {
             if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -54,8 +55,18 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
         amount: amount,
         bank: bank,
         last_digts: last_for_digits,
-        validate:false
+        validate:false,
+        id:id
     }
+    if(last_for_digits.length!==4){
+        Swal.fire({
+            title: "Error",
+            text: "Los últimos 4 dígitos deben tener 4 caracteres",
+            icon: "error",
+        });
+        setIsLoading(false);
+        return
+    }  
     if(phone==="" || amount===0 || bank==="" || last_for_digits===""){
         console.log("Faltan datos")
         Swal.fire({
@@ -68,7 +79,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     }
 
     try {
-        const response = await fetch(" https://project-we-fund-logic2-0.onrender.com/pagoMovil ", {
+        const response = await fetch(" https://project-we-fund-a8vb.onrender.com/pagoMovil ", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -123,7 +134,7 @@ console.log("Success:", response);
                 placeholder="monto"
                 value={monto}
                 onChange={changeInput}
-            />Mondo en dolares
+            />Monto en dolares
 
          <div className="flex justify-center items-center ">
         <div className="flex flex-row-reverse p-9  "> 
@@ -181,7 +192,7 @@ console.log("Success:", response);
         
           
           <div className="mt-4 w-60 pr-8 ">
-            <ButttonPaypal></ButttonPaypal>
+            <ButttonPaypal id={id?.toString() ?? ''} amount={monto.toString()} />
           </div>
           </div>
     

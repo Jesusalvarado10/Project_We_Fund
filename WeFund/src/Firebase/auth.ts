@@ -42,7 +42,27 @@ export async function signInWithEmailAndPasswordAndFetchUserData(email: string, 
       }
 
   }
+export async function getPayments (id: string)
+{
+    try {
+        const response = await fetch('https://project-we-fund-a8vb.onrender.com/getPayments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "id" :id }),
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
     
+}
  export async function getImageUrl(userId: string, fileName: string): Promise<string | null> {
     try {
         // Obtén la referencia de la imagen en Firebase Storage
@@ -50,7 +70,7 @@ export async function signInWithEmailAndPasswordAndFetchUserData(email: string, 
 
         // Obtiene la URL de descarga de la imagen
         const imageUrl = await getDownloadURL(storageRef);
-  console.log(imageUrl)
+        console.log(imageUrl)
 
         return imageUrl; // Devuelve la URL de descarga de la imagen
     } catch (error) {

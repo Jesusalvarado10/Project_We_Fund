@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import Swal from "sweetalert2";
 
 // Renders errors or successfull transactions on the screen.
+interface ButttonPaypalProps {
+  id: string;
+  amount:string 
+}
 
-
-function ButttonPaypal() {
+function ButttonPaypal({id, amount}: ButttonPaypalProps ) {
+  
   const initialOptions = {
     "clientId": "AVw1MdDLEy2zIysY5KjrtTSnDPAoZXUn0gW-hWF2LlnEjplrqA0zUxYZqN2ydBz-relTPsaI-KkiFrCT", // Add the missing clientId property
     
@@ -25,7 +30,7 @@ function ButttonPaypal() {
           }}
           createOrder={async () => {
             try {
-              const response = await fetch("https://project-we-fund-logic2-0.onrender.com/api/orders", {
+              const response = await fetch("https://project-we-fund-a8vb.onrender.com/api/orders", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -33,8 +38,9 @@ function ButttonPaypal() {
                 body: JSON.stringify({
                   cart: [
                     {
-                      id: "001",
+                      id: "003",
                       quantity: "1",
+          
                     },
                   ],
                 }),
@@ -55,7 +61,7 @@ function ButttonPaypal() {
           onApprove={async (data, actions) => {
             try {
               const response = await fetch(
-                `https://project-we-fund-logic2-0.onrender.com/api/orders/${data.orderID}/capture`,
+                `https://project-we-fund-a8vb.onrender.com/api/orders/${data.orderID}/capture`,
                 {
                   method: "POST",
                   headers: {
@@ -89,13 +95,15 @@ function ButttonPaypal() {
                 const jsonTransaction = {
                   "name": orderData.payer.name.given_name,
                   "last_name": orderData.payer.name.surname,
-                  "amount": transaction.amount.value,
+                  "amount": amount,
                   "email": orderData.payer.email_address,
                   "date" : transaction.create_time,
+                  "id": id,
 
                 }
                 console.log(jsonTransaction);
-                const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoPaypall", {
+                
+                const response = await fetch("https://project-we-fund-a8vb.onrender.com/pagoPaypall", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -107,11 +115,11 @@ function ButttonPaypal() {
                 setMessage(
                   `Transaction ${transaction.status}: ${transaction.id}. See console for all available details`,
                 );
-                console.log(
-                  "Capture result",
-                  orderData,
-                  JSON.stringify(orderData, null, 2),
-                );
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Pago exitoso',
+                  text: 'Gracias por su donación',
+                });
               }
             } catch (error) {
               console.error(error);

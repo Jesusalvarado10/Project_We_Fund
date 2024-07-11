@@ -16,8 +16,10 @@ import Impacto from './Pages/Menu/Impacto'
 import Error404 from './Pages/Menu/Error404'
 import Search from './Pages/home/search'
 import { Type } from './Pages/Pagetype/type'
-import { Foundation } from './Pages/viewFoundation/foundation'
+import { FoundationView } from './Pages/viewFoundation/FoundationView'
 import Categoria from './Pages/categorias/Categoria'
+import Salud from './Pages/home/Salud'
+import PerfilFundacion from './Pages/Menu/PerfilFundacion'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -37,9 +39,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                <Route path={searchURL} element={<Search />} />
               <Route path={profileURL} element={<Perfil />} />
               <Route path={typeURL} element={<Type/>} />
-              <Route path={fundationsURL} element={<Foundation/>} />
+              <Route path={fundationsURL} element={<FoundationView />} />
               <Route path="*" element={<Error404 />} />
               <Route path="/categoria" element={<Categoria categoriaSeleccionada={''}  />} />
+              <Route path='/salud' element={<Salud></Salud>}></Route>
+              <Route path='/funda' element={<PerfilFundacion></PerfilFundacion>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>

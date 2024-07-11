@@ -23,7 +23,7 @@ function Impacto() {
 
     const fetchFoundations = async () => {
         try {
-        const response = await fetch('https://project-we-fund-logic2-0.onrender.com/fundaciones');
+        const response = await fetch('https://project-we-fund-a8vb.onrender.com/fundaciones');
         if (!response.ok) {
             throw new Error('Error fetching foundations');
         }
@@ -44,9 +44,9 @@ function Impacto() {
         <div className="flex flex-col items-center justify-center w-full px-10 py-5">
             <div className="bg-white rounded-3xl shadow-xl w-full max-w-4xl">
                 <div className="p-8">
-                    <h1 className="text-3xl text-green-500 font-bold mb-4">Impacto y Fundaciones</h1>
+                    <h1 className="text-3xl text-purple-800 font-bold mb-4">Impacto y Fundaciones</h1>
                     <div className="flex justify-center mt-6">
-                    <button type="submit" className="bg-green-500 text-white px-6 py-3 rounded-full hover:bg-green-600 focus:outline-none"><a href='/perfil'>Editar Perfil</a></button>
+                    <button type="submit" className="bg-purple-800 text-white px-6 py-3 rounded-full hover:bg-purple-800 focus:outline-none"><a href='/funda'>Editar Perfil</a></button>
                     </div>
                     <div className="mt-6">
                         <h2 className="text-xl text-gray-600 mb-2">Impacto del perfil</h2>

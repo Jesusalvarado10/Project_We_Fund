@@ -54,7 +54,7 @@ function Inicio() {
       return;
     }
 
-    const response = await fetch('https://project-we-fund-logic2-0.onrender.com/logIn', {
+    const response = await fetch('https://project-we-fund-a8vb.onrender.com/logIn', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -75,16 +75,18 @@ function Inicio() {
               text: 'Inicio de sesión exitoso',
               icon: 'success',
             }).then(() => {
-              const user = new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone, responseData.userId.country);
+              const user = new User(iduser.user.uid ,responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone, responseData.userId.country);
               login(user);
               navigate('/');
             });
           }
         });
       } else {
-        const user = new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, '', responseData.userId.phone, responseData.userId.country);
-        login(user);
-        navigate('/');
+        Swal.fire({
+          title: 'Error',
+          text: 'Error en el servidor',
+          icon: 'error',
+        });
       }
     } else {
       Swal.fire({
@@ -131,10 +133,7 @@ function Inicio() {
                   <MdLockOutline />
                   <input type="password" name="password" placeholder="Contraseña" value={password} onChange={(ev) => setPassword(ev.target.value)} className="bg-gray-100 mx-2 outline-none text-sm flex-1" />
                 </div>
-                <div className="flex w-64 mb-5 justify-between">
-                  <label className="flex items-center text-xs"><input type="checkbox" name="remember" className="mr-1" />Recuérdame</label>
-                  <a href="#" className="text-xs">¿Olvidaste tu contraseña?</a>
-                </div>
+              
                 <a onClick={handleLogin} href="#" className={`border-2 ${validate ? 'text-customPurple border-customPurple hover:bg-customPurple' : 'hover:bg-green-500 border-green-500 text-green-500'} rounded-full px-6 py-2 inline-block font-semibold hover:text-white`}>
                   {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
                 </a>

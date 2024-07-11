@@ -15,26 +15,27 @@ interface Foundation {
   email: string;
 }
 
-const Salud = () => {
+interface CatHomeProps {
+  category: string;
+}
+
+const CatHome: React.FC<CatHomeProps> = ({ category }) => {
   const navigate = useNavigate();
-  const [data1, setData1] = useState<Foundation[]>([]);
-  const [salud, setSalud] = useState<Foundation[]>([]);
-  console.log(data1);
+  const [foundations, setFoundations] = useState<Foundation[]>([]);
 
   useEffect(() => {
-    fetchSalud();
-  }, []);
+    fetchFoundations();
+  }, [category]);
 
-  const fetchSalud = async () => {
+  const fetchFoundations = async () => {
     try {
       const response = await fetch("https://project-we-fund-a8vb.onrender.com/fundaciones");
       if (!response.ok) {
         throw new Error("Error fetching foundations");
       }
       const data = await response.json();
-      const salud = data.fundaciones.filter((foundation: Foundation) => foundation.type === "Salud");
-      setData1(salud);
-      setSalud(salud);
+      const filteredFoundations = data.fundaciones.filter((foundation: Foundation) => foundation.type === category);
+      setFoundations(filteredFoundations);
     } catch (error) {
       console.error("Error fetching foundations:", error);
     }
@@ -44,7 +45,7 @@ const Salud = () => {
     <div className="flex flex-col items-center mt-6">
       <div className="h-screen">
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {salud.map((foundation) => (
+          {foundations.map((foundation) => (
             <div key={foundation.id} className="bg-white rounded-lg shadow-lg">
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-black">{foundation.tittle}</h3>
@@ -68,4 +69,4 @@ const Salud = () => {
   );
 };
 
-export default Salud;
+export default CatHome;
