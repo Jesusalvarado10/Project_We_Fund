@@ -195,15 +195,22 @@ app.post('/pagoPaypall', async (req, res) => {
 });
 
 const keepAlive = () => {
-  axios.get(`https://project-we-fund-logic2-0.onrender.com/keepalive1`)
-    .then(response => {
-      console.log('Keep alive request sent:', response.status);
-    })
-    .catch(error => {
-      console.error('Error sending keep alive request:', error);
-    });
+  fetch('https://project-we-fund-a8vb.onrender.com/keepalive1', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    console.log('Server responded with:', response.status);
+  })
+  .catch(error => {
+    console.error('Error in keepAlive:', error);
+  });
 };
-
 // Ejecuta la solicitud cada 15 minutos
 setInterval(keepAlive, 150 * 1000);
 
@@ -260,7 +267,7 @@ app.post("/getFundationID", async (req, res) => {
 
 app.get('/keepalive1', (req, res) => {
   console.log('Keepalive GET endpoint hit');
-  res.sendStatus(200);
+  res.sendStatus(200); // Send HTTP status code 200 without any content
 });
 
 // Endpoint de mantenimiento para HEAD
