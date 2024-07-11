@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const { auth, database } = require('./firebase/firebase'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
-const { signUp,logIn, getFundaciones,getFoundationType,getFoundation } = require('./firebase/firebase_auth'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
+const { signUp,logIn, getFundaciones,getFoundationType,getFoundation,addVolun,getVoluntariados } = require('./firebase/firebase_auth'); // Asegúrate de que la ruta a tu archivo de configuración de Firebase sea correcta
 
 // Cargar variables de entorno desde el archivo .env
 dotenv.config();
@@ -61,6 +61,38 @@ app.get('/', (req, res) => {
 
 }
 );
+app.post ("/getPayments" , async (req, res) => {
+    try {
+        const usersRef = database.collection('Pagos');
+        const userref= database.collection('PagosPaypall');
+        const snapshot2 = await userref.where('id', '==', req.body.id).get();
+        const snapshot = await usersRef.where('id', '==', req.body.id).get();
+   
+        if (snapshot.empty && snapshot2.empty) {
+            console.log('No matching documents.');
+            return;
+        }
+        const fund = [];
+        snapshot2.forEach(doc => {
+            console.log(doc.id)
+
+            fund.push({ "monto": doc.data().amount.toString() });
+        
+        });
+
+        snapshot.forEach(doc => {
+            console.log(doc.id)
+
+            fund.push({ "monto": doc.data().amount.toString() });
+        });
+        res.status(200).send({fund});
+
+    } catch (error) {
+        console.error('Error getting documents: ', error);
+        return null;
+    }
+})
+ 
 app.post('/pagoMovilAgregar', async (req, res) => {
     console.log("entro")
     try {
@@ -146,6 +178,39 @@ app.post('/signUp', async (req, res) => {
         res.status(500).send('Error al registrar usuario');
       }
     });
+app.post("/getVoluntariados", async (req, res) => {
+    try {
+        const data = req.body;
+
+        const voluntariados = await getVoluntariados(data.fundacionId); // Espera a que getFundaciones resuelva la promesa
+        if (voluntariados) {
+            res.status(200).send({voluntariados });
+        } else {
+            res.status(400).send({ message: 'Error al obtener fundaciones' });
+        }
+    } catch (error) {
+        console.error('Error al obtener fundaciones: ', error);
+    }
+
+}
+)
+app.post('/addVoluntariado', async (req, res) => {
+    try {
+        const data = req.body;
+        console.log("llego")
+        const respuesta = await addVolun(data)
+        
+        if (respuesta) {
+            res.status(200).send({ message: 'Usuario registrado con éxito', "userId": respuesta });
+        }
+        else {
+            res.status(400).send({ message: 'Error al registrar usuario' });
+        }
+    } catch (error) {
+        console.error('Error al registrar usuario: ', error);
+        res.status(500).send('Error al registrar usuario');
+    }
+});
 app.post('/setImga', async (req, res) => {
     try {
         const data = req.body;

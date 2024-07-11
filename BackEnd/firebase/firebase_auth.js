@@ -1,3 +1,4 @@
+const { Functions } = require('firebase-admin/functions');
 const { auth, database } = require('./firebase'); // Cambia esto a firebase-admin.js
 const { collection, doc, setDoc } = require('firebase-admin/firestore');
 
@@ -37,6 +38,71 @@ async function logIn(tokenID) {
 //     throw error;
 //   }
 // }
+async function addVolun(data) {
+  try {
+    const userId = data.userId; // Obtén el userId del objeto data
+    const fundacionId = data.fundacionId; // Obtén el fundacionId del objeto data
+
+    // Obtén una referencia al documento de la fundación
+    const fundacionRef = database.collection("voluntariado").doc(fundacionId);
+
+    // Verifica si el documento ya existe
+    const fundacionDoc = await fundacionRef.get();
+
+    if (!fundacionDoc.exists) {
+      // Si el documento no existe, créalo con el primer voluntario
+      await fundacionRef.set({
+        volunteers: [{ 
+          userId: userId,
+          name: data.name,
+          last_name: data.last_name,
+        }]
+      });
+    } else {
+      // Si el documento ya existe, verifica si el userId ya está en la lista de voluntarios
+      const volunteers = fundacionDoc.data().volunteers || [];
+      const existingVolunteer = volunteers.find(volunteer => volunteer.userId === userId);
+
+      if (existingVolunteer) {
+        // Si el userId ya existe en la lista de voluntarios, devolver null
+        console.log(`El userId ${userId} ya está registrado como voluntario.`);
+        return null;
+      } else {
+        // Si el userId no existe en la lista de voluntarios, añádelo
+        await fundacionRef.update({
+          volunteers: firebase.firestore.FieldValue.arrayUnion({
+            userId: userId,
+            name: data.name,
+            last_name: data.last_name,
+          })
+        });
+      }
+    }
+
+    return userId;
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    return null;
+  }
+}
+async function getVoluntariados(id) {
+  try {
+    const usersRef = database.collection('voluntariado').doc(id);
+    const snapshot = await usersRef.get();
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return;
+    }
+    console.log(snapshot.data())
+    const fund = snapshot.data();
+    return fund;
+  } catch (error) {
+    console.error('Error getting documents: ', error);
+    return null;
+  }
+}
+
+
 async function signUp(data) {
   try {
     const userRecordValidate = await emailVerification(data.email);
@@ -185,5 +251,5 @@ async function getFoundation(id){
     return null;
   }
 }
-module.exports = { signUp, getFoundationType,logIn, getFundaciones ,getFoundation};
+module.exports = { signUp, getFoundationType,logIn, getFundaciones ,getFoundation,addVolun,getVoluntariados};
 
