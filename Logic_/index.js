@@ -6,12 +6,13 @@ dotenv.config();
 const path = require('path');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
-const urlBackend= process.env.URL_BACKEND;
+const urlBackendlocal= process.env.URL_BACKEND;
+
 const axios = require('axios');
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8888 } = process.env;
 const base = "https://api-m.sandbox.paypal.com";
 const app = express();
-const urlBackendlocal="http://localhost:3000";
+const urlBackend="http://localhost:3000";
 const accountSid = process.env.ACCOUNT_SID;  // Usar variable de entorno
 const authToken = process.env.AUTH_TOKEN; 
 const client = require('twilio')(accountSid, authToken);
@@ -193,7 +194,57 @@ app.post('/pagoPaypall', async (req, res) => {
     res.status(500).send('Error sending data to another server');
 }
 });
+app.post ("/addVoluntariado", async (req, res) => {
+  const data = req.body;
+  console.log(data.id)
 
+  try {
+    // Envía el objeto `data` al otro servidor en localhost
+    const response = await fetch(`${urlBackend}/addVoluntariado`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Obtén la respuesta del otro servidor
+    const responseData = await response.json();
+    console.log('Respuesta del servidor:', responseData);
+    // Reenvía la respuesta del otro servidor al cliente
+    res.status(response.status).json(responseData);
+  } catch (error) {
+    console.error('Error sending data to another server:', error);
+    res.status(500).send('Error sending data to another server');
+  }
+}
+)
+app.post("/getVoluntariados", async (req, res) => {
+      const data = req.body;
+      
+      try {
+
+        const response = await fetch(`${urlBackend}/getVoluntariados`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },  
+          body: JSON.stringify(data)
+        });
+  
+
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+
+    const data2 = await response.json();
+    res.json(data2);
+} catch (error) {
+    console.error('Error fetching data from server:', error);
+    res.status(500).send('Error fetching data from server');
+}
+}
+) 
 const keepAlive = () => {
   fetch('https://project-we-fund-a8vb.onrender.com/keepalive1', {
     method: 'GET',
@@ -275,7 +326,31 @@ app.head('/keepalive', (req, res) => {
   console.log('Keepalive HEAD endpoint hit');
   res.sendStatus(200);
 });
+app.post("/getPayments" , async (req, res) => {
+  const data = req.body;
+  console.log(data.id)
 
+  try {
+    // Envía el objeto `data` al otro servidor en localhost
+    const response = await fetch(`${urlBackend}/getPayments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Obtén la respuesta del otro servidor
+    const responseData = await response.json();
+
+    // Reenvía la respuesta del otro servidor al cliente
+    res.status(response.status).json(responseData);
+  } catch (error) {
+    console.error('Error sending data to another server:', error);
+    res.status(500).send('Error sending data to another server');
+  }
+}
+)
 app.post("/api/orders", async (req, res) => {
     try {
     console.log("Received request to /api");
@@ -424,6 +499,16 @@ const createOrder = async (cart) => {
             currency_code: "USD",
             value: "0",
           },
+        },
+        {id: "003",
+          type: "SHIPPING",
+          label: "ground",
+          selected: true,
+          amount: {
+            currency_code: "USD",
+            value: cart.value,
+          },
+
         },
         {
           id: "002",
