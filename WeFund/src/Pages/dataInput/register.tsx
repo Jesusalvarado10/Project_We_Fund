@@ -143,11 +143,7 @@ function Registro() {
          
     
     }
-    Swal.fire({
-        title: "Error",
-        text: "Error al registrarse, por favor intente de nuevo",
-        icon: "error",
-    });
+   
     setIsLoading(false);
     }
     const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
