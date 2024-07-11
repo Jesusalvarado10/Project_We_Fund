@@ -23,7 +23,7 @@ function Impacto() {
 
     const fetchFoundations = async () => {
         try {
-        const response = await fetch('https://project-we-fund-logic2-0.onrender.com/fundaciones');
+        const response = await fetch('https://project-we-fund-a8vb.onrender.com/fundaciones');
         if (!response.ok) {
             throw new Error('Error fetching foundations');
         }

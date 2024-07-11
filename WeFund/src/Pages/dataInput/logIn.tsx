@@ -54,7 +54,7 @@ function Inicio() {
       return;
     }
 
-    const response = await fetch('https://project-we-fund-logic2-0.onrender.com/logIn', {
+    const response = await fetch('https://project-we-fund-a8vb.onrender.com/logIn', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -75,16 +75,18 @@ function Inicio() {
               text: 'Inicio de sesión exitoso',
               icon: 'success',
             }).then(() => {
-              const user = new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone, responseData.userId.country);
+              const user = new User(iduser as unknown as string,responseData.userId.name, responseData.userId.email, responseData.userId.lastname, url, responseData.userId.phone, responseData.userId.country);
               login(user);
               navigate('/');
             });
           }
         });
       } else {
-        const user = new User(responseData.userId.name, responseData.userId.email, responseData.userId.lastname, '', responseData.userId.phone, responseData.userId.country);
-        login(user);
-        navigate('/');
+        Swal.fire({
+          title: 'Error',
+          text: 'Error en el servidor',
+          icon: 'error',
+        });
       }
     } else {
       Swal.fire({

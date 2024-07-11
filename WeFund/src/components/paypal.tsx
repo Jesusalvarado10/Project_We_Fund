@@ -25,7 +25,7 @@ function ButttonPaypal() {
           }}
           createOrder={async () => {
             try {
-              const response = await fetch("https://project-we-fund-logic2-0.onrender.com/api/orders", {
+              const response = await fetch("https://project-we-fund-a8vb.onrender.com/api/orders", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -55,7 +55,7 @@ function ButttonPaypal() {
           onApprove={async (data, actions) => {
             try {
               const response = await fetch(
-                `https://project-we-fund-logic2-0.onrender.com/api/orders/${data.orderID}/capture`,
+                `https://project-we-fund-a8vb.onrender.com/api/orders/${data.orderID}/capture`,
                 {
                   method: "POST",
                   headers: {
@@ -95,7 +95,7 @@ function ButttonPaypal() {
 
                 }
                 console.log(jsonTransaction);
-                const response = await fetch("https://project-we-fund-logic2-0.onrender.com/pagoPaypall", {
+                const response = await fetch("https://project-we-fund-a8vb.onrender.com/pagoPaypall", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

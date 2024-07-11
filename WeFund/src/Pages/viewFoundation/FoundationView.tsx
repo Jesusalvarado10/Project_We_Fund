@@ -4,17 +4,41 @@ import { Foundation } from "../../Class/foundation";
 import { getImageUrl } from "../../Firebase/auth";
 import { LoadingSpinner } from "../../components/loading";
 import { Map, ZoomControl, Marker } from 'pigeon-maps'
+import { useAuth } from "../../context/contex";
 
 export const FoundationView = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [foundation, setFoundation] = useState<Foundation | null>(null);
     const { id } = useParams();
+    const {user}= useAuth();    
+    const handdleVoluntario = async (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        if(!user){
+            navigate("/logIn");
+            return;
+        }
+        try{
+            const response = fetch('http://localhost:8888/addVoluntariado', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ "userId": user?.id , "fundacionId":id}),
+            });
+            if (!(await response).ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log("Voluntario agregado")
+        }catch(error){
+            console.error("Error fetching foundation:", error);
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://project-we-fund-logic2-0.onrender.com/getFundationID', {
+                const response = await fetch('https://project-we-fund-a8vb.onrender.com/getFundationID', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -98,7 +122,7 @@ export const FoundationView = () => {
           </Map>
         </div>
         <div className="mt-6">
-          <a href={`mailto:${foundation.email}?subject=Quiero ser parte de ustedes&body=Hola, mi nombre es {ESCRIBA SU NOMBRE} y me gustaría ser voluntario.`} className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">
+          <a onClick={handdleVoluntario} className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300 ">
             Quiero ser voluntario
           </a>
         </div>

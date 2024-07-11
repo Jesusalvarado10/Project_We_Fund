@@ -26,7 +26,7 @@ useEffect(() => {
         setPhone(user.phone)
     }
    if(dolarBNV===0){     
-    fetch("https://project-we-fund-logic2-0.onrender.com/dolar")
+    fetch("https://project-we-fund-a8vb.onrender.com/dolar")
         .then(response => {
             if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -68,7 +68,7 @@ const summit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
     }
 
     try {
-        const response = await fetch(" https://project-we-fund-logic2-0.onrender.com/pagoMovil ", {
+        const response = await fetch(" https://project-we-fund-a8vb.onrender.com/pagoMovil ", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

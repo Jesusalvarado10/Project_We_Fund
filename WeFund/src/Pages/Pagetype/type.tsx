@@ -15,7 +15,7 @@ export const Type = () => {
         setLoading(true);
         const fetchData = async () => {
             try {
-                const response = await fetch('https://project-we-fund-logic2-0.onrender.com/getTypes', {
+                const response = await fetch('https://project-we-fund-a8vb.onrender.com/getTypes', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

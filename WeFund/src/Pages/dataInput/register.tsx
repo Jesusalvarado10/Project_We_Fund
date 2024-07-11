@@ -94,7 +94,7 @@ function Registro() {
             return;
 
         }
-        const response = await fetch('https://project-we-fund-logic2-0.onrender.com/signUp', {
+        const response = await fetch('https://project-we-fund-a8vb.onrender.com/signUp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ function Registro() {
                     }
                     console.log("entro")
                    const img= await uploadFile(data.userId, file);
-                   await fetch('https://project-we-fund-logic2-0.onrender.com/setImga', {
+                   await fetch('https://project-we-fund-a8vb.onrender.com/setImga', {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
