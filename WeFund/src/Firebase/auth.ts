@@ -42,7 +42,27 @@ export async function signInWithEmailAndPasswordAndFetchUserData(email: string, 
       }
 
   }
+export async function getPayments (id: string)
+{
+    try {
+        const response = await fetch('http://localhost:8888/getPayments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "id" :id }),
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return null;
+    }
     
+}
  export async function getImageUrl(userId: string, fileName: string): Promise<string | null> {
     try {
         // Obtén la referencia de la imagen en Firebase Storage

@@ -1,7 +1,7 @@
 export const homeURL = "/"
 export const registerURL = "/register"
 export const loginURL = "/login"
-export const nationalURL = "/payment/national"
+export const nationalURL = "/payment/:id"
 export const registerURLFund='/registerFunds'
 export const nacionality = {  
   "Argentina": { "code": "AR", "dialCode": "+54", "name": "Argentina" },

@@ -58,14 +58,14 @@ const Home = () => {
   return (
     <>
     <div className="bg-white shadow-md z-10 w-full" style={{ marginTop: '0.5rem' }}>
-<div className="grid grid-cols-5 items-center justify-center gap-4 py-2 md:py-3 px-4 md:px-8">
+    <div className="grid grid-cols-5 items-center justify-center gap-4 py-2 md:py-3 px-4 md:px-8">
 
 
   <a onClick={()=>{
     const url = `/type/Educación`
        navigate(url)
       
-      }}   className="flex flex-col items-center text-gray-700 group">
+      }}   className="flex flex-col items-center text-gray-700 group cursor-pointer">
     <FontAwesomeIcon 
       icon={faUserGraduate} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
@@ -79,7 +79,7 @@ const Home = () => {
      const url = `/type/Salud` 
        navigate(url)
       
-      }} className="flex flex-col items-center text-gray-700 group">
+      }} className="flex flex-col items-center text-gray-700 group cursor-pointer">
   <FontAwesomeIcon icon={faHeartPulse} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
@@ -93,7 +93,7 @@ const Home = () => {
     const url = `/type/Alimentos`
        navigate(url)
       
-      }}  className="flex flex-col items-center text-gray-700 group">
+      }}  className="flex flex-col items-center text-gray-700 group cursor-pointer">
   <FontAwesomeIcon icon={faBurger} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
@@ -106,7 +106,7 @@ const Home = () => {
     const url = `/type/Vestimenta`
        navigate(url)
       
-      }}  className="flex flex-col items-center text-gray-700 group">
+      }}  className="flex flex-col items-center text-gray-700 group cursor-pointer">
   <FontAwesomeIcon icon={faShirt}  
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
@@ -119,7 +119,7 @@ const Home = () => {
     const url = `/type/Deporte`
        navigate(url)
       
-      }}   className="flex flex-col items-center text-gray-700 group">
+      }}   className="flex flex-col items-center text-gray-700 group cursor-pointer">
   <FontAwesomeIcon icon={faFutbol} 
       className="text-4xl mb-2 group-hover:text-blue-500 transition-colors duration-300" 
     />
@@ -182,7 +182,8 @@ const Home = () => {
             <button
               className="bg-green-500 hover:bg-[#0A2F23] text-white font-semibold py-2 px-4 rounded transition duration-300"
               onClick={() => {
-                // Lógica para donar
+                const url= `/payment/${foundation.id}`;
+                navigate(url)
               }}
             >
               Donar

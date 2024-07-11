@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Foundation } from "../../Class/foundation";
-import { getImageUrl } from "../../Firebase/auth";
+import { getImageUrl, getPayments } from "../../Firebase/auth";
 import { LoadingSpinner } from "../../components/loading";
 import { Map, ZoomControl, Marker } from 'pigeon-maps'
 import { useAuth } from "../../context/contex";
 import Swal from "sweetalert2";
 
 export const FoundationView = () => {
+    const [payments, setPayments] = useState<{amount: any}[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ export const FoundationView = () => {
     const {user}= useAuth();    
     const [showVolunteers, setShowVolunteers] = useState(false);
     const [volunteers, setVolunteers] = useState<{ name: string, last_name: string }[]>([]);
+    const [showPayments, setShowPayments] = useState(false);
     const handdleVoluntario = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
         setIsLoading(true); 
@@ -29,6 +31,7 @@ export const FoundationView = () => {
             setIsLoading(false);    
             return;
         }
+
         try{
             const response = fetch(' http://localhost:8888/addVoluntariado', {
                 method: 'POST',
@@ -65,6 +68,26 @@ export const FoundationView = () => {
     }
 
     useEffect(() => {
+       
+        const fetchPayments = async () => { 
+            try {
+                if (id) {  
+                    
+                
+                const data = await getPayments(id);
+                if (data) {
+                   
+                    setPayments(data.fund);
+                    console.log("hola")
+                    console.log(data.fund)
+                
+                }}
+            } catch (error) {
+                console.error("Error fetching payments:", error);
+            }
+        }
+        fetchPayments();
+        
         const fetchData = async () => {
             try {
                 const response = await fetch('https://project-we-fund-a8vb.onrender.com/getFundationID', {
@@ -205,7 +228,26 @@ export const FoundationView = () => {
                     )}
                 </div>
             </div>
+            <div className="max-w-4xl mx-auto mt-8">
+                <div 
+                    className="bg-white p-4 rounded-lg shadow cursor-pointer"
+                    onClick={() => setShowPayments(!showPayments)}
+                >
+                    <h2 className="text-xl font-bold text-center ">Pagos</h2>
+                    {showPayments && (
+                        <ul className="mt-4">
+                            {payments.map((payments, index) => (
+                                <li key={index} className="py-2 border-b last:border-b-0">
+                                    {payments.monto}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+            </div>
 </div>
+
+
 </>
     );
 }
