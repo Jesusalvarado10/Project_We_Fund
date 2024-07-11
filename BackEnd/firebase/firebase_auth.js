@@ -38,53 +38,63 @@ async function logIn(tokenID) {
 //     throw error;
 //   }
 // }
+
+
 async function addVolun(data) {
   try {
-    const userId = data.userId; // Obtén el userId del objeto data
-    const fundacionId = data.fundacionId; // Obtén el fundacionId del objeto data
-
-    // Obtén una referencia al documento de la fundación
-    const fundacionRef = database.collection("voluntariado").doc(fundacionId);
-
-    // Verifica si el documento ya existe
-    const fundacionDoc = await fundacionRef.get();
-
-    if (!fundacionDoc.exists) {
-      // Si el documento no existe, créalo con el primer voluntario
-      await fundacionRef.set({
-        volunteers: [{ 
-          userId: userId,
-          name: data.name,
-          last_name: data.last_name,
-        }]
-      });
-    } else {
-      // Si el documento ya existe, verifica si el userId ya está en la lista de voluntarios
-      const volunteers = fundacionDoc.data().volunteers || [];
-      const existingVolunteer = volunteers.find(volunteer => volunteer.userId === userId);
-
-      if (existingVolunteer) {
-        // Si el userId ya existe en la lista de voluntarios, devolver null
-        console.log(`El userId ${userId} ya está registrado como voluntario.`);
-        return null;
-      } else {
-        // Si el userId no existe en la lista de voluntarios, añádelo
-        await fundacionRef.update({
-          volunteers: firebase.firestore.FieldValue.arrayUnion({
-            userId: userId,
-            name: data.name,
-            last_name: data.last_name,
-          })
-        });
-      }
+    const { userId, fundacionId, name, last_name } = data;
+    
+    // Check if all required fields are present
+    if (!userId || !fundacionId || !name || !last_name) {
+      throw new Error('Missing required fields');
     }
 
-    return userId;
+    const fundacionRef = database.collection("voluntariado").doc(fundacionId);
+
+    // Use a transaction to ensure data consistency
+    return await database.runTransaction(async (transaction) => {
+      const fundacionDoc = await transaction.get(fundacionRef);
+
+      if (!fundacionDoc.exists) {
+        // If the document doesn't exist, create it with the first volunteer
+        transaction.set(fundacionRef, {
+          volunteers: [{
+            userId,
+            name,
+            last_name,
+          }]
+        });
+      } else {
+        const volunteers = fundacionDoc.data().volunteers || [];
+        const existingVolunteer = volunteers.find(volunteer => volunteer.userId === userId);
+
+        if (existingVolunteer) {
+          console.log(`El userId ${userId} ya está registrado como voluntario.`);
+          return null;
+        } else {
+          // If the userId doesn't exist in the volunteers list, add it
+          const newVolunteer = {
+            userId,
+            name,
+            last_name,
+          };
+          
+          // Filter out any undefined values
+          Object.keys(newVolunteer).forEach(key => newVolunteer[key] === undefined && delete newVolunteer[key]);
+
+          const newVolunteers = [...volunteers, newVolunteer];
+          transaction.update(fundacionRef, { volunteers: newVolunteers });
+        }
+      }
+
+      return userId;
+    });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
-    return null;
+    throw error;
   }
 }
+
 async function getVoluntariados(id) {
   try {
     const usersRef = database.collection('voluntariado').doc(id);

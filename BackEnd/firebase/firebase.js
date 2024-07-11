@@ -25,4 +25,4 @@ const auth = admin.auth();
 const database = admin.firestore();
 const messaging = admin.messaging();
 
-module.exports = { auth, database,messaging };
+module.exports = { auth, database,messaging,admin };
